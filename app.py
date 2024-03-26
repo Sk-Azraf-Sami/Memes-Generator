@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 from addText import generate_meme
+from enhancement import histogram_equalization
 
 app = Flask(__name__)
 
@@ -39,6 +40,10 @@ def collage():
 @app.route('/generate-meme', methods=['POST'])
 def meme_generation():
     return generate_meme(app.config['UPLOAD_FOLDER'])
+
+@app.route('/enhance', methods=['POST'])
+def enhance_image():
+    return histogram_equalization(app.config['UPLOAD_FOLDER'])
 
 if __name__ == '__main__':
     app.run(debug=True)
