@@ -30,7 +30,7 @@
             margin-bottom: 5px;
         }
 
-        input[type="text"] {
+        input[type="text"], input[type="file"] {
             width: 100%;
             padding: 8px;
             margin-bottom: 10px;
@@ -56,7 +56,7 @@
 </head>
 <body>
     <h1>Meme Generator</h1>
-    <form method="POST" action="generate-meme">
+    <form method="POST" action="generate-meme" enctype="multipart/form-data">
         <label for="top_text">Top Text: </label>
         <input type="text" name="top_text" id="top_text">
         <br>
@@ -65,8 +65,8 @@
         <input type="text" name="bottom_text" id="bottom_text">
         <br>
 
-        <label for="image_url">Image URL:</label>
-        <input type="text" name="image_url" id="image_url">
+        <label for="image">Upload Image:</label>
+        <input type="file" name="image" id="image">
         <br>
 
         <button type="submit">Generate Meme</button>

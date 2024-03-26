@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Meme Generator Result</title>
-    </head>
-    <body>
-        <h1>Meme Generator Result</h1>
-        <img src="{{url_for('static',filename='meme.png') }}" alt="Generated Meme">
-    </body>
-
+<head>
+    <title>Meme Generator Result</title>
+</head>
+<body>
+    <h1>Meme Generator Result</h1>
+    <img src="{{ url_for('static', filename=modified_filename) }}" alt="Generated Meme">
+</body>
 </html>
