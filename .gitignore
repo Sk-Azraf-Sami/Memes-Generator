@@ -1,3 +1,8 @@
 __pycache__/
 static/*
 !static/.gitkeep
+uploads/*
+!uploads/.gitkeep
+
+
+
