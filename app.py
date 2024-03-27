@@ -4,6 +4,7 @@ from enhancement import histogram_equalization
 from bgRemove import remove_background
 from addWatermark import add_watermark
 from blackWhite import convert_to_black_and_white
+from gausBlur import gaussian_blur
 
 app = Flask(__name__)
 
@@ -57,8 +58,12 @@ def blackWhite():
     # Perform actions for enhancement
     return render_template('blackWhite.html')
 
+@app.route('/image_blur')
+def imageBlur():
+    # Perform actions for enhancement
+    return render_template('gausBlur.html')
 
-
+###################################################
 
 @app.route('/generate-meme', methods=['POST'])
 def meme_generation():
@@ -79,6 +84,10 @@ def addwatermark():
 @app.route('/black-white', methods=['POST'])
 def blackAndWhite():
     return convert_to_black_and_white(app.config['UPLOAD_FOLDER'])
+
+@app.route('/gausBlur', methods=['POST'])
+def gausBlur():
+    return gaussian_blur(app.config['UPLOAD_FOLDER'])
 
 if __name__ == '__main__':
     app.run(debug=True)
