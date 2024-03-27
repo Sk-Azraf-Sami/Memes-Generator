@@ -11,69 +11,100 @@
     <style>
         /* Custom CSS for Meme Generator buttons */
 
-/* Center the content vertically and horizontally */
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* Adjust as needed */
-}
+        /* Center the content vertically and horizontally */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Adjust as needed */
+        }
 
-/* Style for the buttons */
-.btn {
-    font-size: 1rem; /* Adjust the font size */
-    padding: 1rem 2rem; /* Adjust the padding */
-    border-radius: 8px; /* Adjust the border radius */
-    transition: all 0.3s ease; /* Add smooth transition effects */
-    width: 200px; /* Fixed width */
-}
+        /* Style for the buttons */
+        .btn {
+            font-size: 1rem; /* Adjust the font size */
+            padding: 1rem 2rem; /* Adjust the padding */
+            border-radius: 8px; /* Adjust the border radius */
+            transition: all 0.3s ease; /* Add smooth transition effects */
+            width: 200px; /* Fixed width */
+        }
 
-/* Primary button style */
-.btn-primary {
-    background-color: #007bff; /* Change to your preferred primary color */
-    color: #fff; /* Text color */
-    border: none; /* Remove border */
-}
+        /* Primary button style */
+        .btn-primary {
+            background-color: #007bff; /* Change to your preferred primary color */
+            color: #fff; /* Text color */
+            border: none; /* Remove border */
+        }
 
-/* Button hover effect */
-.btn:hover {
-    opacity: 0.8; /* Reduce opacity on hover */
-}
+        /* Button hover effect */
+        .btn:hover {
+            opacity: 0.8; /* Reduce opacity on hover */
+        }
 
-/* Button icon style */
-.btn i {
-    margin-right: 0.5rem; /* Add space between icon and text */
-}
-
+        /* Button icon style */
+        .btn i {
+            margin-right: 0.5rem; /* Add space between icon and text */
+        }
 
     </style>
 </head>
 <body>
     <div class="container mt-5">
         <div class="row justify-content-center">
-            <div class="col-md-3 mb-4">
-                <a href="/add_text" class="btn btn-primary btn-block">
-                    <i class="fas fa-font mr-2"></i>
-                    Add Text
-                </a>
+            <div class="col-md-6">
+                <div class="row justify-content-center">
+                    <div class="col-md-6 mb-4">
+                        <a href="/add_text" class="btn btn-primary btn-block">
+                            <i class="fas fa-font mr-2"></i>
+                            Add Text
+                        </a>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <a href="/padding" class="btn btn-primary btn-block">
+                            <i class="fas fa-compress-alt mr-2"></i>
+                            Padding
+                        </a>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <a href="/enhancement" class="btn btn-primary btn-block">
+                            <i class="fas fa-adjust mr-2"></i>
+                            Enhancement
+                        </a>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <a href="/collage" class="btn btn-primary btn-block">
+                            <i class="fas fa-images mr-2"></i>
+                            Collage
+                        </a>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-3 mb-4">
-                <a href="/padding" class="btn btn-primary btn-block">
-                    <i class="fas fa-compress-alt mr-2"></i>
-                    Padding
-                </a>
-            </div>
-            <div class="col-md-3 mb-4">
-                <a href="/enhancement" class="btn btn-primary btn-block">
-                    <i class="fas fa-adjust mr-2"></i>
-                    Enhancement
-                </a>
-            </div>
-            <div class="col-md-3 mb-4">
-                <a href="/collage" class="btn btn-primary btn-block">
-                    <i class="fas fa-images mr-2"></i>
-                    Collage
-                </a>
+            <div class="col-md-6">
+                <div class="row justify-content-center">
+                    <div class="col-md-6 mb-4">
+                        <a href="/background_remover" class="btn btn-primary btn-block">
+                            <i class="fas fa-cut mr-2"></i>
+                            BG Remove
+                        </a>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <a href="/watermark_add" class="btn btn-primary btn-block">
+                            <i class="fas fa-stamp mr-2"></i>
+                            Watermark
+                        </a>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <a href="/black_and_white" class="btn btn-primary btn-block">
+                            <i class="fas fa-adjust mr-2"></i>
+                            Black/White
+                        </a>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <a href="/image_blur" class="btn btn-primary btn-block">
+                            <i class="fas fa-blur mr-2"></i>
+                            Image Blur
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
