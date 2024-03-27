@@ -5,6 +5,7 @@ from bgRemove import remove_background
 from addWatermark import add_watermark
 from blackWhite import convert_to_black_and_white
 from gausBlur import gaussian_blur
+from padding import add_padding
 
 app = Flask(__name__)
 
@@ -88,6 +89,10 @@ def blackAndWhite():
 @app.route('/gausBlur', methods=['POST'])
 def gausBlur():
     return gaussian_blur(app.config['UPLOAD_FOLDER'])
+
+@app.route('/image-padding', methods=['POST'])
+def iamgePadding():
+    return add_padding(app.config['UPLOAD_FOLDER'])
 
 if __name__ == '__main__':
     app.run(debug=True)
