@@ -58,7 +58,7 @@ def remove_background(upload_folder, bg_color=(255, 255, 255)):
     
     
     # Save modified image with a new filename
-    modified_filename = f"{os.path.splitext(filename)[0]}-enhance{os.path.splitext(filename)[1]}"
+    modified_filename = f"{os.path.splitext(filename)[0]}-bgRemove{os.path.splitext(filename)[1]}"
     Image.fromarray(output).save(os.path.join('static', modified_filename))
 
     return render_template('result.html', modified_filename=modified_filename)
