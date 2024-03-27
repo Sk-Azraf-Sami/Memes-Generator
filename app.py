@@ -2,6 +2,7 @@ from flask import Flask, render_template
 from addText import generate_meme
 from enhancement import histogram_equalization
 from bgRemove import remove_background
+from addWatermark import add_watermark
 
 app = Flask(__name__)
 
@@ -43,6 +44,12 @@ def backgroundRemove():
     # Perform actions for enhancement
     return render_template('bgRemove.html')
 
+# Route for add watermark
+@app.route('/add_watermark')
+def addWatermark():
+    # Perform actions for enhancement
+    return render_template('addWatermark.html')
+
 
 @app.route('/generate-meme', methods=['POST'])
 def meme_generation():
@@ -55,6 +62,10 @@ def enhance_image():
 @app.route('/bg-remove', methods=['POST'])
 def bgRemove():
     return remove_background(app.config['UPLOAD_FOLDER'])
+
+@app.route('/add-watermark', methods=['POST'])
+def addwatermark():
+    return add_watermark(app.config['UPLOAD_FOLDER'])
 
 if __name__ == '__main__':
     app.run(debug=True)
