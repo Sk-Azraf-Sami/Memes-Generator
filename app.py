@@ -6,6 +6,7 @@ from addWatermark import add_watermark
 from blackWhite import convert_to_black_and_white
 from gausBlur import gaussian_blur
 from padding import add_padding
+from collage import create_collage
 
 app = Flask(__name__)
 
@@ -93,6 +94,10 @@ def gausBlur():
 @app.route('/image-padding', methods=['POST'])
 def iamgePadding():
     return add_padding(app.config['UPLOAD_FOLDER'])
+
+@app.route('/create-collage', methods=['POST'])
+def createCollage():
+    return create_collage(app.config['UPLOAD_FOLDER'])
 
 if __name__ == '__main__':
     app.run(debug=True)
