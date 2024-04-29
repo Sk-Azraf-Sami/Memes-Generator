@@ -11,7 +11,8 @@
     <!-- Font Awesome icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-   </head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>   
+</head>
 <body>
   <div class="sidebar">
     <div class="logo-details">
@@ -69,17 +70,6 @@
        </a>
        <span class="tooltip">Bluring</span>
      </li>
-
-     <li class="profile">
-         <div class="profile-details">
-           <img src="profile.jpg" alt="profileImg">
-           <div class="name_job">
-             <div class="name">Prem Shahi</div>
-             <div class="job">Web designer</div>
-           </div>
-         </div>
-         <i class='bx bx-log-out' id="log_out" ></i>
-     </li>
     </ul>
   </div>
 
@@ -103,16 +93,13 @@
               <label for="bottom_text">Bottom Text</label>
               <input type="text" class="form-control" name="bottom_text" id="bottom_text">
             </div>
-            <div class="form-group">
-              <label for="image">Image:</label>
-              <input type="file" class="form-control-file" name="image" id="image">
-            </div>
             <button type="submit" class="btn btn-primary">Generate Meme</button>
           </form>
         </div>
       </div>
     </div>
   </div>
+  
 
   
     <section class="home-section">
@@ -122,29 +109,76 @@
         <p class="lead">No Plugins <b>Just Javascript</b></p>
         
         <!-- Upload  -->
-        <form id="file-upload-form" class="uploader">
-          <input id="file-upload" type="file" name="fileUpload"  accept="image/*" />
-          <label class="file-upload-label" for="file-upload" id="file-drag">
-            <img id="file-image" src="#" alt="Preview" class="hidden">
-            <div id="start">
-              <i class="fa fa-download" aria-hidden="true"></i>
-              <div>Select a file or drag here</div>
-              <div id="notimage" class="hidden">Please select an image</div>
-              <span id="file-upload-btn" class="btn btn-primary">Select a file</span>
-            </div>
-            <div id="response" class="hidden">
-              <div id="messages"></div>
-              <progress class="progress" id="file-progress" value="0">
-                <span>0</span>%
-              </progress>
-            </div>
-          </label>
+        <form id="file-upload-form" class="uploader" action="/" method="post" enctype="multipart/form-data" target="hidden_iframe">
+            <input id="file-upload" type="file" name="file" accept="image/*" />
+            <label class="file-upload-label" for="file-upload" id="file-drag">
+                <img id="file-image" src="#" alt="Preview" class="hidden">
+                <div id="start">
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                    <div>Select a file or drag here</div>
+                    <div id="notimage" class="hidden">Please select an image</div>
+                    <span id="file-upload-btn" class="btn btn-primary">Select a file</span>
+                </div>
+            </label>
         </form>
        </div>
+
+       <img id="uploaded-image" src="" alt="Uploaded image" style="display: none;">
   </section>
+
+  <iframe name="hidden_iframe" id="hidden_iframe" style="display: none;"></iframe>
 
   <!-- Modal -->
 
+  
+  <script>
+    function previewImage(event) {
+        const file = event.target.files[0];
+        const fileImage = document.getElementById('file-image');
+        
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                fileImage.src = e.target.result;
+                fileImage.classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        } else {
+            fileImage.src = '#';
+            fileImage.classList.add('hidden');
+        }
+    }
+
+    document.getElementById("file-upload").addEventListener("change", function() {
+        document.getElementById("file-upload-form").submit();
+    });
+    
+    $(document).ready(function(){
+        $('#file-upload-form').on('submit', function(e){
+            e.preventDefault(); // Prevent the default form submission
+            var formData = new FormData(this);
+            $.ajax({
+                url : $(this).attr('action') || window.location.pathname,
+                type: "POST",
+                data: formData,
+                contentType: false,
+                cache: false,
+                processData:false,
+                success: function(data){
+                    // File uploaded successfully
+                    console.log(data);
+                    // Display the uploaded image
+                    var uploadedImage = document.getElementById('file-image');
+                    uploadedImage.src = data.file_path;
+                    uploadedImage.classList.remove('hidden');
+                },
+                error: function(jXHR, textStatus, errorThrown){
+                    alert(errorThrown);
+                }
+            });
+        });
+    });
+    </script>
 
   <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
