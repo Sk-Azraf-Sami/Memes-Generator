@@ -1,6 +1,10 @@
 __pycache__/
 static/*
+
+!static/style.css
+!static/script.js
 !static/.gitkeep
+
 uploads/*
 !uploads/.gitkeep
 
