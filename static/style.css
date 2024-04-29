@@ -1,4 +1,6 @@
     /* Google Font Link */
+    @import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css);
+    @import url('https://fonts.googleapis.com/css?family=Roboto');
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
     *{
       margin: 0;
@@ -248,12 +250,6 @@
         display: none;
       }
     }
-      
-        
-    @import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css);
-    @import url('https://fonts.googleapis.com/css?family=Roboto');
-    
-    
     html,body,* { box-sizing: border-box; font-size: 16px;}
     html,body   { height: 100%; text-align: center;}
     body        { padding: 2rem; background: #f8f8f8;}

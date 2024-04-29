@@ -11,7 +11,7 @@
     <!-- Font Awesome icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>   
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
   <div class="sidebar">
@@ -122,10 +122,9 @@
             </label>
         </form>
        </div>
-
-       <img id="uploaded-image" src="" alt="Uploaded image" style="display: none;">
   </section>
-
+  
+  <img id="uploaded-image" src="" alt="Uploaded image" style="display: none;">
   <iframe name="hidden_iframe" id="hidden_iframe" style="display: none;"></iframe>
 
   <!-- Modal -->
@@ -150,13 +149,15 @@
     }
 
     document.getElementById("file-upload").addEventListener("change", function() {
-        document.getElementById("file-upload-form").submit();
+        $('#file-upload-form').trigger('submit'); // Trigger the submit event in jQuery
     });
     
     $(document).ready(function(){
         $('#file-upload-form').on('submit', function(e){
             e.preventDefault(); // Prevent the default form submission
             var formData = new FormData(this);
+            console.log('About to send AJAX request');
+            
             $.ajax({
                 url : $(this).attr('action') || window.location.pathname,
                 type: "POST",
@@ -165,23 +166,33 @@
                 cache: false,
                 processData:false,
                 success: function(data){
+                    // Log the data object
+                    console.log('Response data:', data);
+                    
                     // File uploaded successfully
-                    console.log(data);
+                    console.log('File uploaded successfully');
+                    
                     // Display the uploaded image
-                    var uploadedImage = document.getElementById('file-image');
-                    uploadedImage.src = data.file_path;
-                    uploadedImage.classList.remove('hidden');
+                    var uploadedImage = document.getElementById('uploaded-image');
+                    uploadedImage.src = window.location.origin + '/' + data.file_path; // Update the src attribute
+                    uploadedImage.style.display = "block"; // Make the image visible
+                    
+                    // Optionally, you can also show a success message or perform other actions here
                 },
-                error: function(jXHR, textStatus, errorThrown){
-                    alert(errorThrown);
+                complete: function(jqXHR, textStatus) {
+                    console.log('AJAX call completed with status:', textStatus);
+                    console.log('Response:', jqXHR.responseText);
+                },
+                error: function(jqXHR, textStatus, errorThrown){
+                    // Log the error to the console
+                    console.error('AJAX error:', textStatus, errorThrown);
                 }
             });
+            console.log('AJAX request sent'); 
         });
     });
     </script>
 
-  <!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <!-- Bootstrap JS -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="{{ url_for('static', filename='script.js') }}"></script>
