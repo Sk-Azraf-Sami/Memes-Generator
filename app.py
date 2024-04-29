@@ -17,7 +17,14 @@ def upload_file():
 
     if file:
         filename = secure_filename(file.filename)
-        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        
+        # Get the original extension
+        _, extension = os.path.splitext(filename)
+        
+        # Rename the file to 'latest' with the original extension
+        new_filename = 'latest' + extension
+        
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], new_filename)
         file.save(file_path)
         return jsonify(success=True, file_path=file_path), 200
 
