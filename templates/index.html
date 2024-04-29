@@ -20,13 +20,13 @@
         <i class='bx bx-menu' id="btn" ></i>
     </div>
     <ul class="nav-list">
-      <li>
-        <a href="/add_text">
-          <i class='bx bx-grid-alt'></i>
-          <span class="links_name">Add Text</span>
-        </a>
-         <span class="tooltip">Add Text</span>
-      </li>
+        <li>
+            <a href="#" data-toggle="modal" data-target="#addTextModal">
+              <i class='bx bx-grid-alt'></i>
+              <span class="links_name">Add Text</span>
+            </a>
+            <span class="tooltip">Add Text</span>
+          </li>
       <li>
        <a href="/padding">
          <i class='bx bx-user' ></i>
@@ -82,7 +82,40 @@
      </li>
     </ul>
   </div>
-  <section class="home-section">
+
+  <!--Add Text Modal-->
+  <div class="modal fade" id="addTextModal" tabindex="-1" role="dialog" aria-labelledby="addTextModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="addTextModalLabel">Add Text</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="/generate-meme" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+              <label for="top_text">Top Text</label>
+              <input type="text" class="form-control" name="top_text" id="top_text">
+            </div>
+            <div class="form-group">
+              <label for="bottom_text">Bottom Text</label>
+              <input type="text" class="form-control" name="bottom_text" id="bottom_text">
+            </div>
+            <div class="form-group">
+              <label for="image">Image:</label>
+              <input type="file" class="form-control-file" name="image" id="image">
+            </div>
+            <button type="submit" class="btn btn-primary">Generate Meme</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+    <section class="home-section">
       <div class="text">Dashboard</div>
        <div> 
         <h2>File Upload Image Preview</h2>
@@ -91,7 +124,7 @@
         <!-- Upload  -->
         <form id="file-upload-form" class="uploader">
           <input id="file-upload" type="file" name="fileUpload"  accept="image/*" />
-          <label for="file-upload" id="file-drag">
+          <label class="file-upload-label" for="file-upload" id="file-drag">
             <img id="file-image" src="#" alt="Preview" class="hidden">
             <div id="start">
               <i class="fa fa-download" aria-hidden="true"></i>
@@ -109,6 +142,14 @@
         </form>
        </div>
   </section>
+
+  <!-- Modal -->
+
+
+  <!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

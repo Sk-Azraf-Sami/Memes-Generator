@@ -279,7 +279,7 @@
       max-width: 600px;
     
     }
-      label {
+    .file-upload-label {
         float: left;
         clear: both;
         width: 100%;
@@ -382,3 +382,38 @@
     #file-upload {
         display: none;
       }
+
+      /* Custom CSS for modal */
+.modal-content {
+    border-radius: 10px;
+  }
+  
+  .modal-header {
+    border-bottom: none;
+  }
+  
+  .modal-body {
+    padding: 30px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  label {
+    font-weight: bold;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+  
+  .btn-primary:focus {
+    box-shadow: none;
+  }
+  
