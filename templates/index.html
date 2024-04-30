@@ -192,31 +192,34 @@
         });
     });
 
-    $(document).ready(function(){
-        $('#addTextForm').on('submit', function(e){
-            e.preventDefault(); // Prevent the default form submission
-            var formData = new FormData(this);
-            
-            $.ajax({
-                url : $(this).attr('action') || window.location.pathname,
-                type: "POST",
-                data: formData,
-                contentType: false,
-                cache: false,
-                processData:false,
-                success: function(data){
-                    // Display the uploaded image with added text
-                    var uploadedImage = document.getElementById('uploaded-image');
-                    uploadedImage.src = window.location.origin + '/' + data.file_path; // Update the src attribute
-                    uploadedImage.style.display = "block"; // Make the image visible
-                },
-                error: function(jqXHR, textStatus, errorThrown){
-                    // Log the error to the console
-                    console.error('AJAX error:', textStatus, errorThrown);
-                }
-            });
-        });
-    });
+      $(document).ready(function(){
+          $('#addTextForm').on('submit', function(e){
+              e.preventDefault(); // Prevent the default form submission
+              var formData = new FormData(this);
+              
+              $.ajax({
+                  url : $(this).attr('action') || window.location.pathname,
+                  type: "POST",
+                  data: formData,
+                  contentType: false,
+                  cache: false,
+                  processData:false,
+                  success: function(data){
+                      // Display the uploaded image with added text
+                      var uploadedImage = document.getElementById('uploaded-image');
+                      uploadedImage.src = window.location.origin + '/' + data.file_path; // Update the src attribute
+                      uploadedImage.style.display = "block"; // Make the image visible
+  
+                      // Close the modal
+                      $('#addTextModal').modal('hide');
+                  },
+                  error: function(jqXHR, textStatus, errorThrown){
+                      // Log the error to the console
+                      console.error('AJAX error:', textStatus, errorThrown);
+                  }
+              });
+          });
+      });
     </script>
 
 <!-- Bootstrap JS -->
