@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 from werkzeug.utils import secure_filename
 import os
+from PIL import Image
 from addText import add_text
 from padding import add_padding
 from enhancement import histogram_equalization
@@ -29,10 +30,16 @@ def upload_file():
         
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], new_filename)
         file.save(file_path)
+
+        # If the file is not a jpg, convert it to jpg
+        if extension.lower() not in ['.jpg', '.jpeg']:
+            img = Image.open(file_path).convert('RGB')
+            new_filename = 'latest.jpg'
+            new_file_path = os.path.join(app.config['UPLOAD_FOLDER'], new_filename)
+            img.save(new_file_path, 'JPEG')
         
         # Redirect to the meme-gene route
         return redirect(url_for('memegene'))
-
 ### Home page 
 @app.route('/')
 def index():
