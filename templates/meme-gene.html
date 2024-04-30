@@ -29,19 +29,19 @@
             <span class="tooltip">Add Text</span>
           </li>
       <li>
-       <a href="/padding">
+       <a href="#" data-toggle="modal" data-target="#addPaddingModal">
          <i class='bx bx-user' ></i>
          <span class="links_name">Padding</span>
        </a>
        <span class="tooltip">Padding</span>
      </li>
      <li>
-       <a href="/enhancement">
-         <i class='bx bx-chat' ></i>
-         <span class="links_name">Enhancement</span>
-       </a>
-       <span class="tooltip">Enhancement</span>
-     </li>
+      <a href="#" onclick="enhanceImage(event)">
+          <i class='bx bx-chat'></i>
+          <span class="links_name">Enhancement</span>
+      </a>
+      <span class="tooltip">Enhancement</span>
+  </li>
      <li>
        <a href="/collage">
          <i class='bx bx-pie-chart-alt-2' ></i>
@@ -100,11 +100,51 @@
     </div>
   </div>
 
+  <!--Padding Modal-->
+  <div class="modal fade" id="addPaddingModal" tabindex="-1" role="dialog" aria-labelledby="addPaddingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="addPaddingModalLabel">Add Padding</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="addPaddingForm" action="/padding" method="post" enctype="multipart/form-data" target="hidden_iframe">
+            <div class="form-group">
+              <label for="top_padding">Top Padding</label>
+              <input type="text" class="form-control" name="top_padding" id="top_padding">
+            </div>
+            <div class="form-group">
+              <label for="bottom_padding">Bottom Padding</label>
+              <input type="text" class="form-control" name="bottom_padding" id="bottom_padding">
+            </div>
+            <div class="form-group">
+              <label for="left_padding">Left Padding</label>
+              <input type="text" class="form-control" name="left_padding" id="left_padding">
+            </div>
+            <div class="form-group">
+              <label for="right_padding">Right Padding</label>
+              <input type="text" class="form-control" name="right_padding" id="right_padding">
+            </div>
+            <div class="form-group">
+                <label for="padding_color">Padding Color</label>
+                <input type="color" class="form-control" name="padding_color" id="padding_color" value="#ffffff">
+            </div>
+            <button type="submit" class="btn btn-primary">Generate Meme</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
     <section class="home-section">
       <div class="text">Dashboard</div>
        <div> 
         <h2>File Upload Image Preview</h2>
-        <p class="lead">No Plugins <b>Just Javascript</b></p>
+        <p class="lead">Enhancement <b>for grayscale image</b></p>
        </div>
 
        <img id="uploaded-image" src="/static/latest.jpg" alt="Uploaded image" style="display: block;">
@@ -130,6 +170,38 @@
                 }, 1000);
             });
         });
+
+        $(document).ready(function(){
+            $('#addPaddingForm').on('submit', function(e){
+                e.preventDefault(); // Prevent the default form submission
+                // Close the modal
+                $('#addPaddingModal').modal('hide');
+                // Manually submit the form
+                this.submit();
+                // Delay the page reload by 1000 milliseconds (1 second)
+                setTimeout(function() {
+                    location.reload();
+                }, 1000);
+            });
+        });
+
+        function enhanceImage(event) {
+          event.preventDefault();  // Prevent the default link behavior
+      
+          $.ajax({
+              url: '/enhance_image',
+              type: 'POST',
+              success: function(response) {
+                  console.log(response);
+                  location.reload();
+                  // You can add code here to handle the response
+              },
+              error: function(error) {
+                  console.log(error);
+                  // You can add code here to handle errors
+              }
+          });
+      }
     
     </script>
 

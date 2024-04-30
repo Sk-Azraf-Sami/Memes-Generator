@@ -3,29 +3,13 @@ from PIL import Image
 import cv2
 import numpy as np
 from werkzeug.utils import secure_filename
-import os 
 
-def histogram_equalization(upload_folder):
-    # Check if the request contains the file part
-    if 'image' not in request.files:
-        return 'No file part'
-    
-    file = request.files['image']
-    
-    # If the user does not select a file, the browser submits an empty file without filename
-    if file.filename == '':
-        return 'No selected file'
-    
-    # If the file exists and is allowed
-    if file:
-        # Save the file to a secure location
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(upload_folder, filename))
-        try:
-            img = Image.open(file)
-            img = np.array(img)  # Convert PIL Image to NumPy array
-        except:
-            return 'Invalid Image'
+def histogram_equalization(image_path):
+    # Open the image with PIL
+    img = Image.open(image_path)
+
+    # Convert the PIL image to an OpenCV image (numpy array)
+    img = np.array(img)
     
     img_h, img_w = img.shape[:2]  # Get height and width of the image
     
@@ -63,8 +47,7 @@ def histogram_equalization(upload_folder):
 
     output_cdf *= 255
     
-    # Save modified image with a new filename
-    modified_filename = f"{os.path.splitext(filename)[0]}-enhance{os.path.splitext(filename)[1]}"
-    Image.fromarray(output).save(os.path.join('static', modified_filename))
+    meme_path = 'static/latest.jpg'
+    cv2.imwrite(meme_path, output)
 
-    return render_template('result.html', modified_filename=modified_filename)
+    return meme_path
