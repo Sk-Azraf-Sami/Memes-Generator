@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <title> Responsive Sidebar Menu  | CodingLab </title>
+    <!-- Boxicons CDN Link -->
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="logo-details">
+      <i class='bx bxl-c-plus-plus icon'></i>
+        <div class="logo_name">CodingLab</div>
+        <i class='bx bx-menu' id="btn" ></i>
+    </div>
+    <ul class="nav-list">
+        <li>
+            <a href="#" data-toggle="modal" data-target="#addTextModal">
+              <i class='bx bx-grid-alt'></i>
+              <span class="links_name">Add Text</span>
+            </a>
+            <span class="tooltip">Add Text</span>
+          </li>
+      <li>
+       <a href="/padding">
+         <i class='bx bx-user' ></i>
+         <span class="links_name">Padding</span>
+       </a>
+       <span class="tooltip">Padding</span>
+     </li>
+     <li>
+       <a href="/enhancement">
+         <i class='bx bx-chat' ></i>
+         <span class="links_name">Enhancement</span>
+       </a>
+       <span class="tooltip">Enhancement</span>
+     </li>
+     <li>
+       <a href="/collage">
+         <i class='bx bx-pie-chart-alt-2' ></i>
+         <span class="links_name">Collage</span>
+       </a>
+       <span class="tooltip">Collage</span>
+     </li>
+     <li>
+       <a href="/background_remover">
+         <i class='bx bx-folder' ></i>
+         <span class="links_name">Background Remove</span>
+       </a>
+       <span class="tooltip">Background Remove</span>
+     </li>
+     <li>
+       <a href="/add_watermark">
+         <i class='bx bx-cart-alt' ></i>
+         <span class="links_name">Add Watermark</span>
+       </a>
+       <span class="tooltip">Add Watermark</span>
+     </li>
+     <li>
+       <a href="/image_blur">
+         <i class='bx bx-heart' ></i>
+         <span class="links_name">Bluring</span>
+       </a>
+       <span class="tooltip">Bluring</span>
+     </li>
+    </ul>
+  </div>
+
+  <!--Add Text Modal-->
+  <div class="modal fade" id="addTextModal" tabindex="-1" role="dialog" aria-labelledby="addTextModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="addTextModalLabel">Add Text</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="addTextForm" action="/addtext" method="post" enctype="multipart/form-data" target="hidden_iframe">
+            <div class="form-group">
+              <label for="top_text">Top Text</label>
+              <input type="text" class="form-control" name="top_text" id="top_text">
+            </div>
+            <div class="form-group">
+              <label for="bottom_text">Bottom Text</label>
+              <input type="text" class="form-control" name="bottom_text" id="bottom_text">
+            </div>
+            <button type="submit" class="btn btn-primary">Generate Meme</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <section class="home-section">
+      <div class="text">Dashboard</div>
+       <div> 
+        <h2>File Upload Image Preview</h2>
+        <p class="lead">No Plugins <b>Just Javascript</b></p>
+       </div>
+
+       <img id="uploaded-image" src="/static/latest.jpg" alt="Uploaded image" style="display: block;">
+  </section>
+  
+ 
+  <iframe name="hidden_iframe" id="hidden_iframe" style="display: none;"></iframe>
+
+  <!-- Modal -->
+
+  
+    <script>
+        $(document).ready(function(){
+            $('#addTextForm').on('submit', function(e){
+                e.preventDefault(); // Prevent the default form submission
+                // Close the modal
+                $('#addTextModal').modal('hide');
+                // Manually submit the form
+                this.submit();
+                // Delay the page reload by 1000 milliseconds (1 second)
+                setTimeout(function() {
+                    location.reload();
+                }, 1000);
+            });
+        });
+    
+    </script>
+
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

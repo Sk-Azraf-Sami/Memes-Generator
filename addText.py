@@ -7,7 +7,7 @@ def textsize(text, font):
     _, _, width, height = draw.textbbox((0, 0), text=text, font=font)
     return width, height
 
-def generate_meme(top_text, bottom_text, image_path):
+def add_text(top_text, bottom_text, image_path):
     
     img = Image.open(image_path)
     

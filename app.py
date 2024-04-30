@@ -1,7 +1,7 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for
 from werkzeug.utils import secure_filename
 import os
-from addText import generate_meme
+from addText import add_text
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static'
@@ -27,20 +27,29 @@ def upload_file():
         
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], new_filename)
         file.save(file_path)
-        return jsonify(success=True, file_path=file_path), 200
+        
+        # Redirect to the meme-gene route
+        return redirect(url_for('memegene'))
 
+### Home page 
 @app.route('/')
 def index():
     return render_template('index.html')
 
+### tool page 
+@app.route('/meme-gene')
+def memegene():
+    return render_template('meme-gene.html')
 
-@app.route('/generate-meme', methods=['POST'])
-def handle_generate_meme():
+
+#### add text
+@app.route('/addtext', methods=['POST'])
+def handle_add_text():
     top_text = request.form.get('top_text')
     bottom_text = request.form.get('bottom_text')
     image_path = os.path.join(app.config['UPLOAD_FOLDER'], 'latest.jpg')
 
-    meme_path = generate_meme(top_text, bottom_text, image_path)
+    meme_path = add_text(top_text, bottom_text, image_path)
 
     return jsonify({'file_path': meme_path})
 
