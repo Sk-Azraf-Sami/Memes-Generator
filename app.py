@@ -5,6 +5,8 @@ from PIL import Image
 from addText import add_text
 from padding import add_padding
 from enhancement import histogram_equalization
+from bgRemove import remove_background
+from addCredit import add_credit
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static'
@@ -87,9 +89,27 @@ def handle_padding():
     return jsonify({'file_path': meme_path})
 
 @app.route('/enhance_image', methods=['POST'])
-def enhance_image():
+def handle_enhance_image():
     image_path = os.path.join(app.config['UPLOAD_FOLDER'], 'latest.jpg')
     histogram_equalization(image_path)
     return jsonify({'status': 'success'})
+
+@app.route('/bg_remove', methods=['POST'])
+def handle_bg_remove():
+    image_path = os.path.join(app.config['UPLOAD_FOLDER'], 'latest.jpg')
+    remove_background(image_path)
+    return jsonify({'status': 'success'})
+
+@app.route('/add_credit', methods=['POST'])
+def handle_add_credit():
+    credit_text = request.form.get('credit_text')
+    font_size = int(request.form.get('font_size'))
+    opacity = float(request.form.get('opacity'))
+    image_path = os.path.join(app.config['UPLOAD_FOLDER'], 'latest.jpg')
+
+    meme_path = add_credit(credit_text, font_size, opacity, image_path)
+
+    return jsonify({'file_path': meme_path})
+
 if __name__ == '__main__':
     app.run(debug=True)

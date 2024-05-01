@@ -1,212 +1,271 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
-    <meta charset="UTF-8">
-    <title> Responsive Sidebar Menu  | CodingLab </title>
+    <meta charset="UTF-8" />
+    <title>Meme Generator</title>
     <!-- Boxicons CDN Link -->
-    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Font Awesome icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-</head>
-<body>
-  <div class="sidebar">
-    <div class="logo-details">
-      <i class='bx bxl-c-plus-plus icon'></i>
+  </head>
+  <body>
+    <div class="sidebar">
+      <div class="logo-details">
+        <i class="bx bxl-c-plus-plus icon"></i>
         <div class="logo_name">CodingLab</div>
-        <i class='bx bx-menu' id="btn" ></i>
-    </div>
-    <ul class="nav-list">
+        <i class="bx bx-menu" id="btn"></i>
+      </div>
+      <ul class="nav-list">
         <li>
-            <a href="#" data-toggle="modal" data-target="#addTextModal">
-              <i class='bx bx-grid-alt'></i>
-              <span class="links_name">Add Text</span>
-            </a>
-            <span class="tooltip">Add Text</span>
-          </li>
-      <li>
-       <a href="#" data-toggle="modal" data-target="#addPaddingModal">
-         <i class='bx bx-user' ></i>
-         <span class="links_name">Padding</span>
-       </a>
-       <span class="tooltip">Padding</span>
-     </li>
-     <li>
-      <a href="#" onclick="enhanceImage(event)">
-          <i class='bx bx-chat'></i>
-          <span class="links_name">Enhancement</span>
-      </a>
-      <span class="tooltip">Enhancement</span>
-  </li>
-     <li>
-       <a href="/collage">
-         <i class='bx bx-pie-chart-alt-2' ></i>
-         <span class="links_name">Collage</span>
-       </a>
-       <span class="tooltip">Collage</span>
-     </li>
-     <li>
-       <a href="/background_remover">
-         <i class='bx bx-folder' ></i>
-         <span class="links_name">Background Remove</span>
-       </a>
-       <span class="tooltip">Background Remove</span>
-     </li>
-     <li>
-       <a href="/add_watermark">
-         <i class='bx bx-cart-alt' ></i>
-         <span class="links_name">Add Watermark</span>
-       </a>
-       <span class="tooltip">Add Watermark</span>
-     </li>
-     <li>
-       <a href="/image_blur">
-         <i class='bx bx-heart' ></i>
-         <span class="links_name">Bluring</span>
-       </a>
-       <span class="tooltip">Bluring</span>
-     </li>
-    </ul>
-  </div>
+          <a href="#" data-toggle="modal" data-target="#addTextModal">
+            <i class="bx bx-grid-alt"></i>
+            <span class="links_name">Add Text</span>
+          </a>
+          <span class="tooltip">Add Text</span>
+        </li>
+        <li>
+          <a href="#" data-toggle="modal" data-target="#addPaddingModal">
+            <i class="bx bx-user"></i>
+            <span class="links_name">Padding</span>
+          </a>
+          <span class="tooltip">Padding</span>
+        </li>
+        <li>
+          <a href="#" onclick="enhanceImage(event)">
+            <i class="bx bx-chat"></i>
+            <span class="links_name">Enhancement</span>
+          </a>
+          <span class="tooltip">Enhancement</span>
+        </li>
+        <li>
+          <a href="/collage">
+            <i class="bx bx-pie-chart-alt-2"></i>
+            <span class="links_name">Collage</span>
+          </a>
+          <span class="tooltip">Collage</span>
+        </li>
+        <li>
+          <a href="#" onclick="bgRemove(event)">
+            <i class="bx bx-chat"></i>
+            <span class="links_name">Background Remove</span>
+          </a>
+          <span class="tooltip">Background Remove</span>
+        </li>
+        <li>
+          <a href="#" data-toggle="modal" data-target="#addCreditModal">
+            <i class="bx bx-grid-alt"></i>
+            <span class="links_name">Add Credit</span>
+          </a>
+          <span class="tooltip">Add Credit</span>
+        </li>
+        <li>
+          <a href="/image_blur">
+            <i class="bx bx-heart"></i>
+            <span class="links_name">Bluring</span>
+          </a>
+          <span class="tooltip">Bluring</span>
+        </li>
+      </ul>
+    </div>
 
-  <!--Add Text Modal-->
-  <div class="modal fade" id="addTextModal" tabindex="-1" role="dialog" aria-labelledby="addTextModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header bg-primary text-white">
-          <h5 class="modal-title" id="addTextModalLabel">Add Text</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form id="addTextForm" action="/addtext" method="post" enctype="multipart/form-data" target="hidden_iframe">
-            <div class="form-group">
-              <label for="top_text">Top Text</label>
-              <input type="text" class="form-control" name="top_text" id="top_text">
-            </div>
-            <div class="form-group">
-              <label for="bottom_text">Bottom Text</label>
-              <input type="text" class="form-control" name="bottom_text" id="bottom_text">
-            </div>
-            <button type="submit" class="btn btn-primary">Generate Meme</button>
-          </form>
+    <!-- Add Text Modal -->
+    <div class="modal fade" id="addTextModal" tabindex="-1" role="dialog" aria-labelledby="addTextModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="addTextModalLabel">Add Text</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <form id="addTextForm" action="/addtext" method="post" enctype="multipart/form-data" target="hidden_iframe">
+              <div class="form-group">
+                <label for="top_text">Top Text</label>
+                <input type="text" class="form-control" name="top_text" id="top_text" />
+              </div>
+              <div class="form-group">
+                <label for="bottom_text">Bottom Text</label>
+                <input type="text" class="form-control" name="bottom_text" id="bottom_text" />
+              </div>
+              <button type="submit" class="btn btn-primary">Generate Meme</button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!--Padding Modal-->
-  <div class="modal fade" id="addPaddingModal" tabindex="-1" role="dialog" aria-labelledby="addPaddingModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header bg-primary text-white">
-          <h5 class="modal-title" id="addPaddingModalLabel">Add Padding</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form id="addPaddingForm" action="/padding" method="post" enctype="multipart/form-data" target="hidden_iframe">
-            <div class="form-group">
-              <label for="top_padding">Top Padding</label>
-              <input type="text" class="form-control" name="top_padding" id="top_padding">
-            </div>
-            <div class="form-group">
-              <label for="bottom_padding">Bottom Padding</label>
-              <input type="text" class="form-control" name="bottom_padding" id="bottom_padding">
-            </div>
-            <div class="form-group">
-              <label for="left_padding">Left Padding</label>
-              <input type="text" class="form-control" name="left_padding" id="left_padding">
-            </div>
-            <div class="form-group">
-              <label for="right_padding">Right Padding</label>
-              <input type="text" class="form-control" name="right_padding" id="right_padding">
-            </div>
-            <div class="form-group">
+    <!-- Padding Modal -->
+    <div class="modal fade" id="addPaddingModal" tabindex="-1" role="dialog" aria-labelledby="addPaddingModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="addPaddingModalLabel">Add Padding</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <form id="addPaddingForm" action="/padding" method="post" enctype="multipart/form-data" target="hidden_iframe">
+              <div class="form-group">
+                <label for="top_padding">Top Padding</label>
+                <input type="text" class="form-control" name="top_padding" id="top_padding" />
+              </div>
+              <div class="form-group">
+                <label for="bottom_padding">Bottom Padding</label>
+                <input type="text" class="form-control" name="bottom_padding" id="bottom_padding" />
+              </div>
+              <div class="form-group">
+                <label for="left_padding">Left Padding</label>
+                <input type="text" class="form-control" name="left_padding" id="left_padding" />
+              </div>
+              <div class="form-group">
+                <label for="right_padding">Right Padding</label>
+                <input type="text" class="form-control" name="right_padding" id="right_padding" />
+              </div>
+              <div class="form-group">
                 <label for="padding_color">Padding Color</label>
-                <input type="color" class="form-control" name="padding_color" id="padding_color" value="#ffffff">
-            </div>
-            <button type="submit" class="btn btn-primary">Generate Meme</button>
-          </form>
+                <input type="color" class="form-control" name="padding_color" id="padding_color" value="#ffffff" />
+              </div>
+              <button type="submit" class="btn btn-primary">Generate Meme</button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  
+
+    <!-- Credit text modal -->
+    <div class="modal fade" id="addCreditModal" tabindex="-1" role="dialog" aria-labelledby="addWatermarkModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="addCreditModalLabel">Add Credit</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <form id="addCreditForm" action="/add_credit" method="post" enctype="multipart/form-data" target="hidden_iframe">
+              <div class="form-group">
+                <label for="credit_text">Credit Text</label>
+                <input type="text" class="form-control" name="credit_text" id="credit_text" />
+              </div>
+              <div class="form-group">
+                <label for="font_size">Font Size</label>
+                <select class="form-control" name="font_size" id="font_size">
+                  {% for i in range(12, 73, 2) %}
+                    <option value="{{ i }}">{{ i }}px</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="opacity">Opacity</label>
+                <input type="range" class="form-control-range" name="opacity" id="opacity" min="0" max="1" step="0.1" value="1" />
+              </div>
+              <button type="submit" class="btn btn-primary">Generate Meme</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <section class="home-section">
       <div class="text">Dashboard</div>
-       <div> 
+      <div>
         <h2>File Upload Image Preview</h2>
-        <p class="lead">Enhancement <b>for grayscale image</b></p>
-       </div>
+        <p class="lead">
+          Enhancement <b>for grayscale image</b>
+        </p>
+      </div>
 
-       <img id="uploaded-image" src="/static/latest.jpg" alt="Uploaded image" style="display: block;">
-  </section>
-  
- 
-  <iframe name="hidden_iframe" id="hidden_iframe" style="display: none;"></iframe>
+      <img id="uploaded-image" src="/static/latest.jpg" alt="Uploaded image" style="display: block;" />
+    </section>
 
-  <!-- Modal -->
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display: none;"></iframe>
 
-  
+    <!-- Modal -->
+
     <script>
-        $(document).ready(function(){
-            $('#addTextForm').on('submit', function(e){
-                e.preventDefault(); // Prevent the default form submission
-                // Close the modal
-                $('#addTextModal').modal('hide');
-                // Manually submit the form
-                this.submit();
-                // Delay the page reload by 1000 milliseconds (1 second)
-                setTimeout(function() {
-                    location.reload();
-                }, 1000);
-            });
-        });
-
-        $(document).ready(function(){
-            $('#addPaddingForm').on('submit', function(e){
-                e.preventDefault(); // Prevent the default form submission
-                // Close the modal
-                $('#addPaddingModal').modal('hide');
-                // Manually submit the form
-                this.submit();
-                // Delay the page reload by 1000 milliseconds (1 second)
-                setTimeout(function() {
-                    location.reload();
-                }, 1000);
-            });
-        });
-
-        function enhanceImage(event) {
-          event.preventDefault();  // Prevent the default link behavior
+      $(document).ready(function () {
+        $('#addTextForm').on('submit', function (e) {
+          e.preventDefault() // Prevent the default form submission
+          // Close the modal
+          $('#addTextModal').modal('hide')
+          // Manually submit the form
+          this.submit()
+          // Delay the page reload by 1000 milliseconds (1 second)
+          setTimeout(function () {
+            location.reload()
+          }, 1000)
+        })
+      })
       
-          $.ajax({
-              url: '/enhance_image',
-              type: 'POST',
-              success: function(response) {
-                  console.log(response);
-                  location.reload();
-                  // You can add code here to handle the response
-              },
-              error: function(error) {
-                  console.log(error);
-                  // You can add code here to handle errors
-              }
-          });
+      $(document).ready(function () {
+        $('#addPaddingForm').on('submit', function (e) {
+          e.preventDefault() // Prevent the default form submission
+          // Close the modal
+          $('#addPaddingModal').modal('hide')
+          // Manually submit the form
+          this.submit()
+          // Delay the page reload by 1000 milliseconds (1 second)
+          setTimeout(function () {
+            location.reload()
+          }, 1000)
+        })
+      })
+      
+      function enhanceImage(event) {
+        event.preventDefault() // Prevent the default link behavior
+      
+        $.ajax({
+          url: '/enhance_image',
+          type: 'POST',
+          success: function (response) {
+            console.log(response)
+            location.reload()
+            // You can add code here to handle the response
+          },
+          error: function (error) {
+            console.log(error)
+            // You can add code here to handle errors
+          }
+        })
       }
-    
+      
+      function bgRemove(event) {
+        event.preventDefault() // Prevent the default link behavior
+      
+        $.ajax({
+          url: '/bg_remove',
+          type: 'POST',
+          success: function (response) {
+            console.log(response)
+            location.reload()
+            // You can add code here to handle the response
+          },
+          error: function (error) {
+            console.log(error)
+            // You can add code here to handle errors
+          }
+        })
+      }
+      
+      $(document).ready(function () {
+        $('#addCreditForm').on('submit', function (e) {
+          e.preventDefault() // Prevent the default form submission
+          // Close the modal
+          $('#addCreditModal').modal('hide')
+          // Manually submit the form
+          this.submit()
+          // Delay the page reload by 1000 milliseconds (1 second)
+          setTimeout(function () {
+            location.reload()
+          }, 1000)
+        })
+      })
     </script>
 
-<!-- Bootstrap JS -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
-</body>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+  </body>
 </html>
