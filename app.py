@@ -7,6 +7,7 @@ from padding import add_padding
 from enhancement import histogram_equalization
 from bgRemove import remove_background
 from addCredit import add_credit
+from gausBlur import gaussian_blur
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static'
@@ -110,6 +111,17 @@ def handle_add_credit():
     meme_path = add_credit(credit_text, font_size, opacity, image_path)
 
     return jsonify({'file_path': meme_path})
+
+@app.route('/gausBlur', methods=['POST'])
+def handle_gaussian_blur():
+    kernel_size = int(request.form['kernel_size'])
+    sigma = float(request.form['sigma'])
+    image_path = os.path.join(app.config['UPLOAD_FOLDER'], 'latest.jpg')
+
+    meme_path = gaussian_blur(kernel_size, sigma, image_path)
+
+    return jsonify({'file_path': meme_path})
+
 
 if __name__ == '__main__':
     app.run(debug=True)

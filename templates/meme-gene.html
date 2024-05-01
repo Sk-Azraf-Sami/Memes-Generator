@@ -64,8 +64,8 @@
           <span class="tooltip">Add Credit</span>
         </li>
         <li>
-          <a href="/image_blur">
-            <i class="bx bx-heart"></i>
+          <a href="#" data-toggle="modal" data-target="#gaussianBlurModal">
+            <i class="bx bx-grid-alt"></i>
             <span class="links_name">Bluring</span>
           </a>
           <span class="tooltip">Bluring</span>
@@ -150,17 +150,13 @@
                 <input type="text" class="form-control" name="credit_text" id="credit_text" />
               </div>
               <div class="form-group">
-                <label for="font_size">Font Size</label>
-                <select class="form-control" name="font_size" id="font_size">
-                  {% for i in range(12, 73, 2) %}
-                    <option value="{{ i }}">{{ i }}px</option>
-                  {% endfor %}
-                </select>
-              </div>
+                <label for="font_size">Font Size: <span id="font_size_val">12</span>px</label>
+                <input type="range" class="form-control-range" name="font_size" id="font_size" min="12" max="72" step="1" value="12" oninput="updateValue('font_size', 'font_size_val')" />
+            </div>
               <div class="form-group">
-                <label for="opacity">Opacity</label>
-                <input type="range" class="form-control-range" name="opacity" id="opacity" min="0" max="1" step="0.1" value="1" />
-              </div>
+                <label for="opacity">Opacity: <span id="opacity_val">1</span></label>
+                <input type="range" class="form-control-range" name="opacity" id="opacity" min="0" max="1" step="0.1" value="1" oninput="updateValue('opacity', 'opacity_val')" />
+             </div>
               <button type="submit" class="btn btn-primary">Generate Meme</button>
             </form>
           </div>
@@ -168,6 +164,32 @@
       </div>
     </div>
 
+    <!--Blur-->
+    <div class="modal fade" id="gaussianBlurModal" tabindex="-1" role="dialog" aria-labelledby="gaussianBlurModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="addCreditModalLabel">Add Credit</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <form id="gaussianBlurForm" action="/gausBlur" method="post" enctype="multipart/form-data" target="hidden_iframe">
+              <div class="form-group">
+                <label for="kernel_size">Kernel Size: <span id="kernel_size_val">1</span></label>
+                <input type="range" class="form-control-range" name="kernel_size" id="kernel_size" min="1" max="10" oninput="updateValue('kernel_size', 'kernel_size_val')">
+                <small id="kernelHelp" class="form-text text-muted">Kernel size determines the size of the neighborhood where the blur is computed.</small>
+            </div>
+            <div class="form-group">
+                <label for="sigma">Sigma: <span id="sigma_val">0.1</span></label>
+                <input type="range" class="form-control-range" name="sigma" id="sigma" min="0.1" max="2" step="0.1" oninput="updateValue('sigma', 'sigma_val')">
+                <small id="sigmaHelp" class="form-text text-muted">Sigma is the standard deviation of the Gaussian function, controlling the amount of blur.</small>
+            </div>
+              <button type="submit" class="btn btn-primary">Generate Meme</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
     <section class="home-section">
       <div class="text">Dashboard</div>
       <div>
@@ -185,6 +207,11 @@
     <!-- Modal -->
 
     <script>
+
+      function updateValue(inputId, outputId) {
+        document.getElementById(outputId).innerText = document.getElementById(inputId).value;
+    }
+
       $(document).ready(function () {
         $('#addTextForm').on('submit', function (e) {
           e.preventDefault() // Prevent the default form submission
@@ -262,6 +289,21 @@
           }, 1000)
         })
       })
+
+      $(document).ready(function () {
+        $('#gaussianBlurForm').on('submit', function (e) {
+          e.preventDefault() // Prevent the default form submission
+          // Close the modal
+          $('#gaussianBlurModal').modal('hide')
+          // Manually submit the form
+          this.submit()
+          // Delay the page reload by 1000 milliseconds (1 second)
+          setTimeout(function () {
+            location.reload()
+          }, 1000)
+        })
+      })
+
     </script>
 
     <!-- Bootstrap JS -->

@@ -56,18 +56,12 @@
 </head>
 <body>
     <h1>Meme Generator</h1>
-    <form action="/gausBlur" method="post" enctype="multipart/form-data">
-        <label for="kernel_size">Kernel Size:</label>
-        <input type="text" name="kernel_size" id="kernel_size">
-        <br>
-        <label for="sigma">Sigma:</label>
-        <input type="text" name="sigma" id="sigma">
-        <br>
-        <label for="image">Image:</label>
-        <input type="file" name="image" id="image">
-        <br>
-        <button type="submit">Generate Meme</button>
-    </form>
+    "<select class="form-control" name="font_size" id="font_size">
+        {% for i in range(12, 73, 2) %}
+          <option value="{{ i }}">{{ i }}px</option>
+        {% endfor %}
+        <!-- Add more options as needed -->
+      </select>" I want here small up-down arrow to increase and decrease od font size 
 </body>
 </body>
 </html>
