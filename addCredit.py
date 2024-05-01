@@ -21,6 +21,13 @@ def add_credit(credit_text, font_size, opacity, text_color, image_path):
     # Calculate watermark text size and position
     text_width, text_height = textsize(credit_text, font=font)
     width, height = image.size
+
+    # Adjust font size if text is too wide
+    while text_width + 20 > width:
+        font_size -= 1
+        font = ImageFont.truetype("arial.ttf", font_size)
+        text_width, text_height = textsize(credit_text, font=font)
+
     x = width - text_width - 10
     y = height - text_height - 10
     
