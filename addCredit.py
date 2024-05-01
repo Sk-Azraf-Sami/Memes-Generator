@@ -9,7 +9,11 @@ def textsize(text, font):
     _, _, width, height = draw.textbbox((0, 0), text=text, font=font)
     return width, height
 
-def add_credit(credit_text, font_size, opacity, text_color, image_path):
+def add_credit(credit_text, font_size, opacity, text_color, boldness, image_path):
+    
+    # default boldness
+    boldness = 0
+    
     image = Image.open(image_path)
     
     # Create a drawing context
@@ -33,7 +37,11 @@ def add_credit(credit_text, font_size, opacity, text_color, image_path):
     
     # Set watermark text color and opacity
     fill_color = (*text_color, int(255 * opacity))  # Use text_color with adjusted opacity
-    draw.text((x, y), credit_text, fill=fill_color, font=font)
+
+    # Draw text multiple times with slight offsets to mimic boldness
+    for dx in range(-boldness, boldness+1):
+        for dy in range(-boldness, boldness+1):
+            draw.text((x+dx, y+dy), credit_text, fill=fill_color, font=font)
     
     meme_path = 'static/latest.jpg'
     image.save(meme_path)
