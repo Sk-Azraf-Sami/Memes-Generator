@@ -70,6 +70,13 @@
           </a>
           <span class="tooltip">Bluring</span>
         </li>
+        <li>
+          <a href="#" onclick="black_white(event)">
+            <i class="bx bx-chat"></i>
+            <span class="links_name">Black/White</span>
+          </a>
+          <span class="tooltip">Black/White</span>
+        </li>
       </ul>
     </div>
 
@@ -298,7 +305,25 @@
           }
         })
       }
+
+      function black_white(event) {
+        event.preventDefault() // Prevent the default link behavior
       
+        $.ajax({
+          url: '/black_white',
+          type: 'POST',
+          success: function (response) {
+            console.log(response)
+            location.reload()
+            // You can add code here to handle the response
+          },
+          error: function (error) {
+            console.log(error)
+            // You can add code here to handle errors
+          }
+        })
+      }
+
       $(document).ready(function () {
         $('#addCreditForm').on('submit', function (e) {
           e.preventDefault() // Prevent the default form submission

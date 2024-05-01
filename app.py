@@ -8,6 +8,7 @@ from enhancement import histogram_equalization
 from bgRemove import remove_background
 from addCredit import add_credit
 from gausBlur import gaussian_blur
+from blackWhite import convert_to_black_and_white
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static'
@@ -141,6 +142,12 @@ def handle_gaussian_blur():
     meme_path = gaussian_blur(kernel_size, sigma, image_path)
 
     return jsonify({'file_path': meme_path})
+
+@app.route('/black_white', methods=['POST'])
+def handle_black_white():
+    image_path = os.path.join(app.config['UPLOAD_FOLDER'], 'latest.jpg')
+    convert_to_black_and_white(image_path)
+    return jsonify({'status': 'success'})
 
 
 if __name__ == '__main__':
