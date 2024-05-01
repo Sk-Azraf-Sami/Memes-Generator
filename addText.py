@@ -7,7 +7,7 @@ def textsize(text, font):
     _, _, width, height = draw.textbbox((0, 0), text=text, font=font)
     return width, height
 
-def add_text(top_text, bottom_text, image_path):
+def add_text(top_text, bottom_text, text_color, image_path):
     
     img = Image.open(image_path)
     
@@ -15,7 +15,6 @@ def add_text(top_text, bottom_text, image_path):
     font_size = int(img.size[1] / 5)
     font = ImageFont.truetype("arial.ttf", font_size)
 
-    text_color = (255, 255, 255)
     outline_color = (0, 0, 0)
     outline_thickness = 2 
 

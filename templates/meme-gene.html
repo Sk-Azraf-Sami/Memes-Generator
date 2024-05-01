@@ -17,7 +17,7 @@
     <div class="sidebar">
       <div class="logo-details">
         <i class="bx bxl-c-plus-plus icon"></i>
-        <div class="logo_name">CodingLab</div>
+        <div class="logo_name">MemeLab</div>
         <i class="bx bx-menu" id="btn"></i>
       </div>
       <ul class="nav-list">
@@ -91,6 +91,10 @@
                 <label for="bottom_text">Bottom Text</label>
                 <input type="text" class="form-control" name="bottom_text" id="bottom_text" />
               </div>
+              <div class="form-group">
+                <label for="text_color">Text Color</label>
+                <input type="color" class="form-control" name="text_color" id="text_color" value="#ffffff" />
+              </div>
               <button type="submit" class="btn btn-primary">Generate Meme</button>
             </form>
           </div>
@@ -109,21 +113,21 @@
           <div class="modal-body">
             <form id="addPaddingForm" action="/padding" method="post" enctype="multipart/form-data" target="hidden_iframe">
               <div class="form-group">
-                <label for="top_padding">Top Padding</label>
-                <input type="text" class="form-control" name="top_padding" id="top_padding" />
-              </div>
-              <div class="form-group">
-                <label for="bottom_padding">Bottom Padding</label>
-                <input type="text" class="form-control" name="bottom_padding" id="bottom_padding" />
-              </div>
-              <div class="form-group">
-                <label for="left_padding">Left Padding</label>
-                <input type="text" class="form-control" name="left_padding" id="left_padding" />
-              </div>
-              <div class="form-group">
-                <label for="right_padding">Right Padding</label>
-                <input type="text" class="form-control" name="right_padding" id="right_padding" />
-              </div>
+                <label for="top_padding">Top Padding: <span id="top_padding_val">0</span></label>
+                <input type="range" class="form-control-range" name="top_padding" id="top_padding" min="0" max="1000" step="1" value="0" oninput="updateValue('top_padding', 'top_padding_val')" />
+            </div>
+            <div class="form-group">
+                <label for="bottom_padding">Bottom Padding: <span id="bottom_padding_val">0</span></label>
+                <input type="range" class="form-control-range" name="bottom_padding" id="bottom_padding" min="0" max="1000" step="1" value="0" oninput="updateValue('bottom_padding', 'bottom_padding_val')" />
+            </div>
+            <div class="form-group">
+                <label for="left_padding">Left Padding: <span id="left_padding_val">0</span></label>
+                <input type="range" class="form-control-range" name="left_padding" id="left_padding" min="0" max="1000" step="1" value="0" oninput="updateValue('left_padding', 'left_padding_val')" />
+            </div>
+            <div class="form-group">
+                <label for="right_padding">Right Padding: <span id="right_padding_val">0</span></label>
+                <input type="range" class="form-control-range" name="right_padding" id="right_padding" min="0" max="1000" step="1" value="0" oninput="updateValue('right_padding', 'right_padding_val')" />
+            </div>
               <div class="form-group">
                 <label for="padding_color">Padding Color</label>
                 <input type="color" class="form-control" name="padding_color" id="padding_color" value="#ffffff" />
@@ -152,11 +156,15 @@
               <div class="form-group">
                 <label for="font_size">Font Size: <span id="font_size_val">12</span>px</label>
                 <input type="range" class="form-control-range" name="font_size" id="font_size" min="12" max="72" step="1" value="12" oninput="updateValue('font_size', 'font_size_val')" />
-            </div>
+              </div>
               <div class="form-group">
                 <label for="opacity">Opacity: <span id="opacity_val">1</span></label>
                 <input type="range" class="form-control-range" name="opacity" id="opacity" min="0" max="1" step="0.1" value="1" oninput="updateValue('opacity', 'opacity_val')" />
-             </div>
+              </div>
+              <div class="form-group">
+                <label for="text_color">Text Color</label>
+                <input type="color" class="form-control" name="text_color" id="text_color" value="#ffffff" />
+              </div>
               <button type="submit" class="btn btn-primary">Generate Meme</button>
             </form>
           </div>
@@ -164,26 +172,26 @@
       </div>
     </div>
 
-    <!--Blur-->
+    <!-- Blur -->
     <div class="modal fade" id="gaussianBlurModal" tabindex="-1" role="dialog" aria-labelledby="gaussianBlurModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header bg-primary text-white">
-            <h5 class="modal-title" id="addCreditModalLabel">Add Credit</h5>
+            <h5 class="modal-title" id="addCreditModalLabel">Bluring</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
           <div class="modal-body">
             <form id="gaussianBlurForm" action="/gausBlur" method="post" enctype="multipart/form-data" target="hidden_iframe">
               <div class="form-group">
                 <label for="kernel_size">Kernel Size: <span id="kernel_size_val">1</span></label>
-                <input type="range" class="form-control-range" name="kernel_size" id="kernel_size" min="1" max="10" oninput="updateValue('kernel_size', 'kernel_size_val')">
+                <input type="range" class="form-control-range" name="kernel_size" id="kernel_size" min="1" max="10" oninput="updateValue('kernel_size', 'kernel_size_val')" />
                 <small id="kernelHelp" class="form-text text-muted">Kernel size determines the size of the neighborhood where the blur is computed.</small>
-            </div>
-            <div class="form-group">
+              </div>
+              <div class="form-group">
                 <label for="sigma">Sigma: <span id="sigma_val">0.1</span></label>
-                <input type="range" class="form-control-range" name="sigma" id="sigma" min="0.1" max="2" step="0.1" oninput="updateValue('sigma', 'sigma_val')">
+                <input type="range" class="form-control-range" name="sigma" id="sigma" min="0.1" max="2" step="0.1" oninput="updateValue('sigma', 'sigma_val')" />
                 <small id="sigmaHelp" class="form-text text-muted">Sigma is the standard deviation of the Gaussian function, controlling the amount of blur.</small>
-            </div>
+              </div>
               <button type="submit" class="btn btn-primary">Generate Meme</button>
             </form>
           </div>
@@ -207,11 +215,10 @@
     <!-- Modal -->
 
     <script>
-
       function updateValue(inputId, outputId) {
-        document.getElementById(outputId).innerText = document.getElementById(inputId).value;
-    }
-
+        document.getElementById(outputId).innerText = document.getElementById(inputId).value
+      }
+      
       $(document).ready(function () {
         $('#addTextForm').on('submit', function (e) {
           e.preventDefault() // Prevent the default form submission
@@ -289,7 +296,7 @@
           }, 1000)
         })
       })
-
+      
       $(document).ready(function () {
         $('#gaussianBlurForm').on('submit', function (e) {
           e.preventDefault() // Prevent the default form submission
@@ -303,7 +310,6 @@
           }, 1000)
         })
       })
-
     </script>
 
     <!-- Bootstrap JS -->

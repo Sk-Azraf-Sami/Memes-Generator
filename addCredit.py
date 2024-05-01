@@ -9,9 +9,7 @@ def textsize(text, font):
     _, _, width, height = draw.textbbox((0, 0), text=text, font=font)
     return width, height
 
-def add_credit(credit_text, font_size, opacity, image_path):
-    
-    
+def add_credit(credit_text, font_size, opacity, text_color, image_path):
     image = Image.open(image_path)
     
     # Create a drawing context
@@ -27,10 +25,8 @@ def add_credit(credit_text, font_size, opacity, image_path):
     y = height - text_height - 10
     
     # Set watermark text color and opacity
-    fill_color = (255, 255, 255, int(255 * opacity))  # White color with adjusted opacity
+    fill_color = (*text_color, int(255 * opacity))  # Use text_color with adjusted opacity
     draw.text((x, y), credit_text, fill=fill_color, font=font)
     
     meme_path = 'static/latest.jpg'
     image.save(meme_path)
-
-    return meme_path
