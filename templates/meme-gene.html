@@ -5,6 +5,7 @@
     <title>Meme Generator</title>
     <!-- Boxicons CDN Link -->
     <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
@@ -16,63 +17,63 @@
   <body>
     <div class="sidebar">
       <div class="logo-details">
-        <i class="bx bxl-c-plus-plus icon"></i>
+        <img src="static/social.png" alt="Icon description" class="icon" width="50" height="50" />
         <div class="logo_name">MemeLab</div>
         <i class="bx bx-menu" id="btn"></i>
       </div>
       <ul class="nav-list">
         <li>
           <a href="#" data-toggle="modal" data-target="#addTextModal">
-            <i class="bx bx-grid-alt"></i>
+            <i class="material-icons">text_fields</i>
             <span class="links_name">Add Text</span>
           </a>
           <span class="tooltip">Add Text</span>
         </li>
         <li>
           <a href="#" data-toggle="modal" data-target="#addPaddingModal">
-            <i class="bx bx-user"></i>
+            <i class="material-icons">filter_frames</i>
             <span class="links_name">Padding</span>
           </a>
           <span class="tooltip">Padding</span>
         </li>
         <li>
           <a href="#" onclick="enhanceImage(event)">
-            <i class="bx bx-chat"></i>
+            <i class="material-icons">auto_fix_high</i>
             <span class="links_name">Enhancement</span>
           </a>
           <span class="tooltip">Enhancement</span>
         </li>
         <li>
           <a href="/collage">
-            <i class="bx bx-pie-chart-alt-2"></i>
+            <i class="material-icons">auto_awesome_mosaic</i>
             <span class="links_name">Collage</span>
           </a>
           <span class="tooltip">Collage</span>
         </li>
         <li>
           <a href="#" onclick="bgRemove(event)">
-            <i class="bx bx-chat"></i>
+            <i class="material-icons">image_not_supported</i>
             <span class="links_name">Background Remove</span>
           </a>
           <span class="tooltip">Background Remove</span>
         </li>
         <li>
           <a href="#" data-toggle="modal" data-target="#addCreditModal">
-            <i class="bx bx-grid-alt"></i>
+            <i class="material-icons">copyright</i>
             <span class="links_name">Add Credit</span>
           </a>
           <span class="tooltip">Add Credit</span>
         </li>
         <li>
           <a href="#" data-toggle="modal" data-target="#gaussianBlurModal">
-            <i class="bx bx-grid-alt"></i>
+            <i class="material-icons">blur_linear</i>
             <span class="links_name">Bluring</span>
           </a>
           <span class="tooltip">Bluring</span>
         </li>
         <li>
           <a href="#" onclick="black_white(event)">
-            <i class="bx bx-chat"></i>
+            <i class="material-icons">filter_b_and_w</i>
             <span class="links_name">Black/White</span>
           </a>
           <span class="tooltip">Black/White</span>
