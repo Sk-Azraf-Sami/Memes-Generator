@@ -35,9 +35,15 @@ def upload_file():
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], new_filename)
         file.save(file_path)
 
-        # If the file is not a jpg, convert it to jpg
+        # If the file is not a jpg or jpeg, convert it to jpg
         if extension.lower() not in ['.jpg', '.jpeg']:
             img = Image.open(file_path).convert('RGB')
+            new_filename = 'latest.jpg'
+            new_file_path = os.path.join(app.config['UPLOAD_FOLDER'], new_filename)
+            img.save(new_file_path, 'JPEG')
+        elif extension.lower() == '.jpeg':
+            # If the file is a jpeg, rename it to jpg
+            img = Image.open(file_path)
             new_filename = 'latest.jpg'
             new_file_path = os.path.join(app.config['UPLOAD_FOLDER'], new_filename)
             img.save(new_file_path, 'JPEG')
