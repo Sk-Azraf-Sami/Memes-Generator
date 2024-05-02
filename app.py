@@ -9,9 +9,12 @@ from bgRemove import remove_background
 from addCredit import add_credit
 from gausBlur import gaussian_blur
 from blackWhite import convert_to_black_and_white
+import re
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static'
+app.config['COLLAGE_FOLDER'] = 'uploads'
+
 
 @app.route('/', methods=['POST'])
 def upload_file():
@@ -155,32 +158,55 @@ def handle_black_white():
     convert_to_black_and_white(image_path)
     return jsonify({'status': 'success'})
 
+from collage import collage
+
 @app.route('/grid', methods=['POST'])
 def handle_grid():
-    # Get the number of rows from the form data
-    rows = int(request.form.get('rows'))
+    # Get the number of rows from the form
+    rows = int(request.form['rows'])
 
-    # Iterate over each row
-    for i in range(1, rows + 1):
-        # Get the number of cells in the current row
-        cells = int(request.form.get(f'cells{i}'))
+    # Prepare the cells parameter
+    cells = [0] * rows
 
-        # Iterate over each cell in the current row
-        for j in range(1, cells + 1):
-            # Get the file from the form data
-            file = request.files.get(f'image{i}{j}')
+    # Iterate over each file in the form
+    for file_key in request.files:
+        # Get the file
+        file = request.files[file_key]
 
-            # If a file was uploaded for the current cell
-            if file:
-                # Secure the filename
-                filename = secure_filename(file.filename)
+        # If the user does not select a file, the browser submits an empty file
+        if file.filename == '':
+            continue
 
-                # Save the file to the upload folder
-                file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-                file.save(file_path)
+        # Make the filename safe, remove unsupported chars
+        filename = secure_filename(file.filename)
 
-     # Return a JSON response
-    return jsonify(success=True)
+        # Convert the image to jpg if it's not already
+        if not filename.lower().endswith('.jpg'):
+            im = Image.open(file)
+            filename = os.path.splitext(filename)[0] + '.jpg'
+            im.convert('RGB').save(os.path.join(app.config['COLLAGE_FOLDER'], filename), 'JPEG')
+        else:
+            # Save the file to the uploads folder
+            file.save(os.path.join(app.config['COLLAGE_FOLDER'], filename))
+
+        # Rename the file to match the row and cell number
+        match = re.match(r'image(\d+)_(\d+)', file_key)
+        if match:
+            row_number = int(match.group(1))
+            cell_number = int(match.group(2))
+            new_filename = f'{row_number}_{cell_number}.jpg'
+            os.rename(os.path.join(app.config['COLLAGE_FOLDER'], filename), os.path.join(app.config['UPLOAD_FOLDER'], new_filename))
+
+            # Update the cells parameter
+            cells[row_number - 1] = max(cells[row_number - 1], cell_number)
+
+    
+    # Call the collage function
+    collage_path = collage(rows, cells, app.config['COLLAGE_FOLDER'])
+
+    # Return a JSON response
+    return jsonify({'status': 'success', 'file_path': collage_path})
+    
     
 if __name__ == '__main__':
     app.run(debug=True)

@@ -426,6 +426,21 @@
         }
     }
 
+    $(document).ready(function () {
+      $('#gridForm').on('submit', function (e) {
+        e.preventDefault() // Prevent the default form submission
+        // Close the modal
+        $('#gridModal').modal('hide')
+        // Manually submit the form
+        this.submit()
+        // Delay the page reload by 1000 milliseconds (1 second)
+        setTimeout(function () {
+          location.reload()
+        }, 1000)
+      })
+    })
+    
+
     </script>
 
     <!-- Bootstrap JS -->
