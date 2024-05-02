@@ -239,9 +239,9 @@
                           <label for="rows">Number of Rows:</label>
                           <input type="number" class="form-control" name="rows" id="rows" min="1" required />
                       </div>
-                      <div id="rowDetails"></div>
                       <button type="button" class="btn btn-secondary" onclick="generateCells()">Generate Cells</button>
-                      <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                      <div id="rowDetails"></div>
+                      <button type="submit" class="btn btn-primary mt-3" style="display: none;" id="generateMeme">Generate Meme</button>
                   </form>
               </div>
           </div>
@@ -405,6 +405,9 @@
             `;
             rowDetails.appendChild(div);
         }
+    
+        // Show the Generate Meme button after generating the cells
+        document.getElementById('generateMeme').style.display = 'block';
     }
     
     function generateImages(row) {
@@ -423,25 +426,6 @@
         }
     }
 
-    $('#gridForm').on('submit', function(e) {
-      e.preventDefault();
-  
-      var formData = new FormData(this);
-  
-      $.ajax({
-          url: '/grid',
-          type: 'POST',
-          data: formData,
-          success: function(data) {
-              // Handle success
-              console.log('Upload successful');
-          },
-          cache: false,
-          contentType: false,
-          processData: false
-      });
-  });
-  
     </script>
 
     <!-- Bootstrap JS -->
