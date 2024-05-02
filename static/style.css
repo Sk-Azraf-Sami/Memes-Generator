@@ -448,3 +448,45 @@
     }
   }
   
+  /**buttons */
+
+  .button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    gap: 20px;
+}
+
+.download-button, .upload-button {
+    padding: 10px 20px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 5px #388E3C;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-radius: 5px;
+}
+
+.download-button {
+    background-color: #4CAF50;
+    box-shadow: 0 5px #388E3C;
+}
+
+.upload-button {
+    background-color: #008CBA;
+    box-shadow: 0 5px #006994;
+}
+
+.download-button:hover, .upload-button:hover {
+    transform: translateY(-3px);
+}
+
+.download-button:hover {
+    box-shadow: 0 8px #388E3C;
+}
+
+.upload-button:hover {
+    box-shadow: 0 8px #006994;
+}

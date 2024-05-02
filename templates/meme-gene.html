@@ -5,7 +5,8 @@
     <title>Meme Generator</title>
     <!-- Boxicons CDN Link -->
     <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
@@ -135,19 +136,19 @@
               <div class="form-group">
                 <label for="top_padding">Top Padding: <span id="top_padding_val">0</span></label>
                 <input type="range" class="form-control-range" name="top_padding" id="top_padding" min="0" max="1000" step="1" value="0" oninput="updateValue('top_padding', 'top_padding_val')" />
-            </div>
-            <div class="form-group">
+              </div>
+              <div class="form-group">
                 <label for="bottom_padding">Bottom Padding: <span id="bottom_padding_val">0</span></label>
                 <input type="range" class="form-control-range" name="bottom_padding" id="bottom_padding" min="0" max="1000" step="1" value="0" oninput="updateValue('bottom_padding', 'bottom_padding_val')" />
-            </div>
-            <div class="form-group">
+              </div>
+              <div class="form-group">
                 <label for="left_padding">Left Padding: <span id="left_padding_val">0</span></label>
                 <input type="range" class="form-control-range" name="left_padding" id="left_padding" min="0" max="1000" step="1" value="0" oninput="updateValue('left_padding', 'left_padding_val')" />
-            </div>
-            <div class="form-group">
+              </div>
+              <div class="form-group">
                 <label for="right_padding">Right Padding: <span id="right_padding_val">0</span></label>
                 <input type="range" class="form-control-range" name="right_padding" id="right_padding" min="0" max="1000" step="1" value="0" oninput="updateValue('right_padding', 'right_padding_val')" />
-            </div>
+              </div>
               <div class="form-group">
                 <label for="padding_color">Padding Color</label>
                 <input type="color" class="form-control" name="padding_color" id="padding_color" value="#ffffff" />
@@ -232,6 +233,16 @@
       </div>
 
       <img id="uploaded-image" src="/static/latest.jpg" alt="Uploaded image" style="display: block;" />
+
+      <div class="button-container">
+        <a href="/static/latest.jpg" download>
+            <button class="download-button"><i class="fas fa-download"></i> Download</button>
+        </a>
+        <a href="/">
+            <button class="upload-button"><i class="fas fa-upload"></i> Upload</button>
+        </a>
+    </div>
+
     </section>
 
     <iframe name="hidden_iframe" id="hidden_iframe" style="display: none;"></iframe>
@@ -306,7 +317,7 @@
           }
         })
       }
-
+      
       function black_white(event) {
         event.preventDefault() // Prevent the default link behavior
       
@@ -324,7 +335,7 @@
           }
         })
       }
-
+      
       $(document).ready(function () {
         $('#addCreditForm').on('submit', function (e) {
           e.preventDefault() // Prevent the default form submission
