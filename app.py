@@ -155,6 +155,32 @@ def handle_black_white():
     convert_to_black_and_white(image_path)
     return jsonify({'status': 'success'})
 
+@app.route('/grid', methods=['POST'])
+def handle_grid():
+    # Get the number of rows from the form data
+    rows = int(request.form.get('rows'))
 
+    # Iterate over each row
+    for i in range(1, rows + 1):
+        # Get the number of cells in the current row
+        cells = int(request.form.get(f'cells{i}'))
+
+        # Iterate over each cell in the current row
+        for j in range(1, cells + 1):
+            # Get the file from the form data
+            file = request.files.get(f'image{i}{j}')
+
+            # If a file was uploaded for the current cell
+            if file:
+                # Secure the filename
+                filename = secure_filename(file.filename)
+
+                # Save the file to the upload folder
+                file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                file.save(file_path)
+
+     # Return a JSON response
+    return jsonify(success=True)
+    
 if __name__ == '__main__':
     app.run(debug=True)

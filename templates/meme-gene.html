@@ -45,12 +45,13 @@
           <span class="tooltip">Enhancement</span>
         </li>
         <li>
-          <a href="/collage">
-            <i class="material-icons">auto_awesome_mosaic</i>
-            <span class="links_name">Collage</span>
-          </a>
-          <span class="tooltip">Collage</span>
-        </li>
+          <li>
+            <a href="#" data-toggle="modal" data-target="#gridModal">
+              <i class="material-icons">auto_awesome_mosaic</i>
+              <span class="links_name">Collage</span>
+            </a>
+            <span class="tooltip">Collage</span>
+          </li>
         <li>
           <a href="#" onclick="bgRemove(event)">
             <i class="material-icons">image_not_supported</i>
@@ -223,6 +224,30 @@
         </div>
       </div>
     </div>
+
+    <!--Collage-->
+    <div class="modal fade" id="gridModal" tabindex="-1" role="dialog" aria-labelledby="gridModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+              <div class="modal-header bg-primary text-white">
+                  <h5 class="modal-title" id="gridModalLabel">Grid Information</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              </div>
+              <div class="modal-body">
+                  <form id="gridForm" action="/grid" method="post" enctype="multipart/form-data" target="hidden_iframe">
+                      <div class="form-group">
+                          <label for="rows">Number of Rows:</label>
+                          <input type="number" class="form-control" name="rows" id="rows" min="1" required />
+                      </div>
+                      <div id="rowDetails"></div>
+                      <button type="button" class="btn btn-secondary" onclick="generateCells()">Generate Cells</button>
+                      <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+
     <section class="home-section">
       <div class="text">Dashboard</div>
       <div>
@@ -363,6 +388,60 @@
           }, 1000)
         })
       })
+
+      function generateCells() {
+        const rows = document.getElementById('rows').value;
+        const rowDetails = document.getElementById('rowDetails');
+        rowDetails.innerHTML = '';
+    
+        for (let i = 1; i <= rows; i++) {
+            const div = document.createElement('div');
+            div.className = 'form-group';
+            div.innerHTML = `
+                <label for="cells${i}">Number of Cells in Row ${i}:</label>
+                <input type="number" class="form-control" name="cells${i}" id="cells${i}" min="1" required />
+                <div id="cellDetails${i}"></div>
+                <button type="button" class="btn btn-secondary mt-2" onclick="generateImages(${i})">Upload Images for Row ${i}</button>
+            `;
+            rowDetails.appendChild(div);
+        }
+    }
+    
+    function generateImages(row) {
+        const cells = document.getElementById(`cells${row}`).value;
+        const cellDetails = document.getElementById(`cellDetails${row}`);
+        cellDetails.innerHTML = '';
+    
+        for (let i = 1; i <= cells; i++) {
+            const div = document.createElement('div');
+            div.className = 'form-group';
+            div.innerHTML = `
+                <label for="image${row}${i}">Image for Cell ${i} in Row ${row}:</label>
+                <input type="file" class="form-control-file" name="image${row}${i}" id="image${row}${i}" required />
+            `;
+            cellDetails.appendChild(div);
+        }
+    }
+
+    $('#gridForm').on('submit', function(e) {
+      e.preventDefault();
+  
+      var formData = new FormData(this);
+  
+      $.ajax({
+          url: '/grid',
+          type: 'POST',
+          data: formData,
+          success: function(data) {
+              // Handle success
+              console.log('Upload successful');
+          },
+          cache: false,
+          contentType: false,
+          processData: false
+      });
+  });
+  
     </script>
 
     <!-- Bootstrap JS -->
