@@ -53,7 +53,7 @@ def upload_file():
             new_file_path = os.path.join(app.config['UPLOAD_FOLDER'], new_filename)
             img.save(new_file_path, 'JPEG')
         
-        # Redirect to the meme-gene route
+        # Redirect to the meme-tools route
         return redirect(url_for('memegene'))
 ### Home page 
 @app.route('/')
@@ -61,9 +61,9 @@ def index():
     return render_template('index.html')
 
 ### tool page 
-@app.route('/meme-gene')
+@app.route('/meme-tools')
 def memegene():
-    return render_template('meme-gene.html')
+    return render_template('meme-tools.html')
 
 
 #### add text
