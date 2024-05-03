@@ -166,7 +166,7 @@ def handle_grid():
     # Get the number of rows from the form
     rows = int(request.form['rows'])
     
-    print(rows)
+    #print(rows)
 
     # Prepare the cells parameter
     cells = [0] * rows
@@ -194,14 +194,14 @@ def handle_grid():
         
         
         # Print the file_key for debugging
-        print(f'file_key: {file_key}')
+        #print(f'file_key: {file_key}')
         # Rename the file to match the row and cell number
         match = re.match(r'image(\d+)_(\d+)', file_key)
         if match:
             row_number = int(match.group(1))
             cell_number = int(match.group(2))
-            print("row number:", row_number)
-            print("cell_number:", cell_number)
+            #print("row number:", row_number)
+            #print("cell_number:", cell_number)
             new_filename = f'{row_number}_{cell_number}.jpg'
             os.rename(os.path.join(app.config['COLLAGE_FOLDER'], filename), os.path.join(app.config['COLLAGE_FOLDER'], new_filename))
 
@@ -209,10 +209,10 @@ def handle_grid():
             cells[row_number - 1] = max(cells[row_number - 1], cell_number)
 
     
-    print('after calling function ==>', rows)
+    #print('after calling function ==>', rows)
     # Call the collage function
     collage_path = collage(rows, cells, app.config['COLLAGE_FOLDER'])
-    print('rows number==>', rows)
+    #print('rows number==>', rows)
 
     # Return a JSON response
     return jsonify({'status': 'success', 'file_path': collage_path})
