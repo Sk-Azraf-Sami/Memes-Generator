@@ -3,7 +3,7 @@ import os
 
 def collage(rows, cells, images_path):
     # List of lists of images
-    images = [[os.path.join(images_path, f'{i}_{j}.jpg') for j in range(1, cells[i]+1)] for i in range(1, rows+1)]
+    images = [[os.path.join(images_path, f'{i}_{j}.jpg') for j in range(1, cells[i-1]+1)] for i in range(1, rows+1)]
 
     # Determine the size of the collage
     collage_height = len(images) * 200

@@ -10,6 +10,8 @@ from addCredit import add_credit
 from gausBlur import gaussian_blur
 from blackWhite import convert_to_black_and_white
 import re
+from collage import collage
+
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static'
@@ -158,12 +160,13 @@ def handle_black_white():
     convert_to_black_and_white(image_path)
     return jsonify({'status': 'success'})
 
-from collage import collage
 
 @app.route('/grid', methods=['POST'])
 def handle_grid():
     # Get the number of rows from the form
     rows = int(request.form['rows'])
+    
+    print(rows)
 
     # Prepare the cells parameter
     cells = [0] * rows
@@ -188,21 +191,28 @@ def handle_grid():
         else:
             # Save the file to the uploads folder
             file.save(os.path.join(app.config['COLLAGE_FOLDER'], filename))
-
+        
+        
+        # Print the file_key for debugging
+        print(f'file_key: {file_key}')
         # Rename the file to match the row and cell number
         match = re.match(r'image(\d+)_(\d+)', file_key)
         if match:
             row_number = int(match.group(1))
             cell_number = int(match.group(2))
+            print("row number:", row_number)
+            print("cell_number:", cell_number)
             new_filename = f'{row_number}_{cell_number}.jpg'
-            os.rename(os.path.join(app.config['COLLAGE_FOLDER'], filename), os.path.join(app.config['UPLOAD_FOLDER'], new_filename))
+            os.rename(os.path.join(app.config['COLLAGE_FOLDER'], filename), os.path.join(app.config['COLLAGE_FOLDER'], new_filename))
 
             # Update the cells parameter
             cells[row_number - 1] = max(cells[row_number - 1], cell_number)
 
     
+    print('after calling function ==>', rows)
     # Call the collage function
     collage_path = collage(rows, cells, app.config['COLLAGE_FOLDER'])
+    print('rows number==>', rows)
 
     # Return a JSON response
     return jsonify({'status': 'success', 'file_path': collage_path})

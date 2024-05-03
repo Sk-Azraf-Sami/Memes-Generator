@@ -419,8 +419,8 @@
             const div = document.createElement('div');
             div.className = 'form-group';
             div.innerHTML = `
-                <label for="image${row}${i}">Image for Cell ${i} in Row ${row}:</label>
-                <input type="file" class="form-control-file" name="image${row}${i}" id="image${row}${i}" required />
+                <label for="image${row}_${i}">Image for Cell ${i} in Row ${row}:</label>
+                <input type="file" class="form-control-file" name="image${row}_${i}" id="image${row}_${i}" required />
             `;
             cellDetails.appendChild(div);
         }

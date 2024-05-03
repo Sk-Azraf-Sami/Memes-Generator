@@ -2,6 +2,7 @@ __pycache__/
 static/*
 
 !static/style.css
+!static/style_file_upload.css
 !static/script.js
 !static/.gitkeep
 
