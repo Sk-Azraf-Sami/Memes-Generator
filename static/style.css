@@ -306,8 +306,8 @@
   
   #uploaded-image {
     display: block;
-    max-width: 50%; /* Adjust as needed */
-    max-height: 50vh; /* Adjust as needed */
+    max-width: 80%; /* Adjust as needed */
+    max-height: 80vh; /* Adjust as needed */
     margin: auto;
   }
 
