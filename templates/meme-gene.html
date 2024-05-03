@@ -236,12 +236,14 @@
               <div class="modal-body">
                   <form id="gridForm" action="/grid" method="post" enctype="multipart/form-data" target="hidden_iframe">
                       <div class="form-group">
-                          <label for="rows">Number of Rows:</label>
+                          <label for="rows">Number of Rows</label>
                           <input type="number" class="form-control" name="rows" id="rows" min="1" required />
                       </div>
-                      <button type="button" class="btn btn-secondary" onclick="generateCells()">Generate Cells</button>
+                      <button type="button" class="btn btn-secondary mb-3" onclick="generateCells()">Generate Cells</button>
                       <div id="rowDetails"></div>
-                      <button type="submit" class="btn btn-primary mt-3" style="display: none;" id="generateMeme">Generate Meme</button>
+                      <div class="text-center">
+                        <button type="submit" class="btn btn-primary" style="display: none;" id="generateMeme">Generate Meme</button>
+                    </div>
                   </form>
               </div>
           </div>
@@ -393,35 +395,63 @@
         const rows = document.getElementById('rows').value;
         const rowDetails = document.getElementById('rowDetails');
         rowDetails.innerHTML = '';
-    
+
         for (let i = 1; i <= rows; i++) {
             const div = document.createElement('div');
             div.className = 'form-group';
             div.innerHTML = `
-                <label for="cells${i}">Number of Cells in Row ${i}:</label>
+                <label for="cells${i}" class="mt-3">Number of Cells in Row ${i}</label>
                 <input type="number" class="form-control" name="cells${i}" id="cells${i}" min="1" required />
                 <div id="cellDetails${i}"></div>
                 <button type="button" class="btn btn-secondary mt-2" onclick="generateImages(${i})">Upload Images for Row ${i}</button>
             `;
             rowDetails.appendChild(div);
         }
-    
+
         // Show the Generate Meme button after generating the cells
-        document.getElementById('generateMeme').style.display = 'block';
+        const generateMemeButton = document.getElementById('generateMeme');
+        generateMemeButton.style.display = 'inline-block';
+        generateMemeButton.parentElement.classList.add('text-center');
     }
-    
+
     function generateImages(row) {
         const cells = document.getElementById(`cells${row}`).value;
         const cellDetails = document.getElementById(`cellDetails${row}`);
         cellDetails.innerHTML = '';
-    
+
         for (let i = 1; i <= cells; i++) {
             const div = document.createElement('div');
             div.className = 'form-group';
-            div.innerHTML = `
-                <label for="image${row}_${i}">Image for Cell ${i} in Row ${row}:</label>
-                <input type="file" class="form-control-file" name="image${row}_${i}" id="image${row}_${i}" required />
-            `;
+
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.className = 'form-control-file';
+            fileInput.name = `image${row}_${i}`;
+            fileInput.id = `image${row}_${i}`;
+            fileInput.required = true;
+            fileInput.accept = 'image/*'; // Only accept image files
+
+            const imagePreview = document.createElement('img');
+            imagePreview.id = `preview${row}_${i}`;
+            imagePreview.style.display = 'none'; // Hide the image preview initially
+            imagePreview.className = 'image-preview'; // Add a class to the image preview
+
+            fileInput.onchange = function() {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = 'block'; // Show the image preview
+                };
+                reader.readAsDataURL(this.files[0]);
+            };
+
+            const label = document.createElement('label');
+            label.htmlFor = `image${row}_${i}`;
+            label.textContent = `Image for Cell ${i} in Row ${row}`;
+
+            div.appendChild(label);
+            div.appendChild(fileInput);
+            div.appendChild(imagePreview);
             cellDetails.appendChild(div);
         }
     }
