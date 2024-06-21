@@ -4,17 +4,13 @@ from werkzeug.utils import secure_filename
 import os
 
 def textsize(text, font):
-    im = Image.new(mode="P", size=(0, 0))
+    im = Image.new(mode="RGBA", size=(0, 0))  # Use RGBA mode for compatibility
     draw = ImageDraw.Draw(im)
     _, _, width, height = draw.textbbox((0, 0), text=text, font=font)
     return width, height
 
 def add_credit(credit_text, font_size, opacity, text_color, boldness, image_path):
-    
-    # default boldness
-    boldness = 0
-    
-    image = Image.open(image_path)
+    image = Image.open(image_path).convert("RGBA")  # Ensure image is in RGBA mode
     
     # Create a drawing context
     draw = ImageDraw.Draw(image)
@@ -43,5 +39,9 @@ def add_credit(credit_text, font_size, opacity, text_color, boldness, image_path
         for dy in range(-boldness, boldness+1):
             draw.text((x+dx, y+dy), credit_text, fill=fill_color, font=font)
     
+    # Convert back to RGB before saving as JPEG
+    image = image.convert("RGB")
     meme_path = 'static/latest.jpg'
     image.save(meme_path)
+
+    return meme_path
