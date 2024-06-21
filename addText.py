@@ -2,13 +2,13 @@ from PIL import Image, ImageDraw, ImageFont
 import os
 
 def textsize(text, font):
-    im = Image.new(mode="P", size=(0, 0))
+    im = Image.new(mode="RGBA", size=(0, 0))  # Use RGBA mode for compatibility
     draw = ImageDraw.Draw(im)
     _, _, width, height = draw.textbbox((0, 0), text=text, font=font)
     return width, height
 
 def add_text(top_text, bottom_text, font_size, opacity, boldness, text_color, image_path):
-    img = Image.open(image_path)
+    img = Image.open(image_path).convert("RGBA")  # Ensure image is in RGBA mode
     draw = ImageDraw.Draw(img)
     
     font = ImageFont.truetype("arial.ttf", font_size)
@@ -36,6 +36,8 @@ def add_text(top_text, bottom_text, font_size, opacity, boldness, text_color, im
             draw.text((top_text_x+dx, top_text_y+dy), top_text, fill=fill_color, font=font)
             draw.text((bottom_text_x+dx, bottom_text_y+dy), bottom_text, fill=fill_color, font=font)
     
+    # Convert back to RGB before saving as JPEG
+    img = img.convert("RGB")
     meme_path = 'static/latest.jpg'
     img.save(meme_path)
 
