@@ -1,45 +1,27 @@
-import cv2
+from io import BytesIO
+from rembg import remove
+from PIL import Image
 import numpy as np
-from flask import Flask, render_template, request
-from PIL import Image, ImageDraw, ImageFont
-from werkzeug.utils import secure_filename
-import os
-
 
 def remove_background(image_path):
-    bg_color = (255, 255, 255)  # Background color to replace with
+    # Open the image
+    with open(image_path, 'rb') as f:
+        input_image = f.read()
     
-    # Open the image with PIL and convert it to RGB
-    img = Image.open(image_path).convert('RGB')
+    # Use rembg to remove the background
+    output_image = remove(input_image)
     
-    # Convert the PIL image to a NumPy array
-    image = np.array(img)
+    # Convert the output bytes to a PIL image
+    img_with_transparency = Image.open(BytesIO(output_image))
     
-    # Convert the image to grayscale
-    grayscale = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+    # Create a white background image of the same size
+    white_background = Image.new("RGB", img_with_transparency.size, (255, 255, 255))
     
-    # Apply Gaussian blur to the grayscale image
-    blurred = cv2.GaussianBlur(grayscale, (5, 5), 0)
+    # Paste the image onto the white background, using itself as the mask
+    white_background.paste(img_with_transparency, mask=img_with_transparency.split()[3])  # Use the alpha channel as the mask
     
-    # Apply Otsu's thresholding to create a binary mask
-    _, binary_mask = cv2.threshold(blurred, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    # Save the result
+    output_path = 'static/latest.jpg'
+    white_background.save(output_path)
     
-    # Invert the mask if necessary. If the foreground is being removed instead of the background, invert the mask.
-    binary_mask = cv2.bitwise_not(binary_mask)
-    
-    # Create a mask with three channels
-    mask_3ch = cv2.cvtColor(binary_mask, cv2.COLOR_GRAY2RGB)
-    
-    # Apply the mask to the original image to isolate the foreground
-    foreground = cv2.bitwise_and(image, mask_3ch)
-    
-    # Create an all-white background
-    background = np.full_like(image, bg_color)
-    
-    # Combine the foreground with the background where the mask is not zero
-    output = np.where(mask_3ch == bg_color, background, foreground)
-    
-    meme_path = 'static/latest.jpg'
-    cv2.imwrite(meme_path, cv2.cvtColor(output, cv2.COLOR_RGB2BGR))
-    
-    return meme_path
+    return output_path
