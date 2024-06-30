@@ -70,22 +70,15 @@ def memegene():
 @app.route('/addtext', methods=['POST'])
 def handle_add_text():
     top_text = request.form.get('top_text')
-    bottom_text = request.form.get('bottom_text')
     font_size = int(request.form.get('font_size'))
-    opacity = float(request.form.get('opacity'))
-    boldness = int(request.form.get('boldness'))
     text_color = request.form.get('text_color')
+    text_position = request.form.get('text_position')
     image_path = os.path.join(app.config['UPLOAD_FOLDER'], 'latest.jpg')
-    
-    text_color = request.form.get('text_color')
-    
-     # Remove the '#' from the start of the color value
-    text_color = text_color[1:]
 
-    # Convert the color from hex to BGR
+    text_color = text_color[1:]
     text_color = tuple(int(text_color[i:i+2], 16) for i in (0, 2, 4))
-    
-    meme_path = add_text(top_text, bottom_text, font_size, opacity, boldness, text_color, image_path)
+
+    meme_path = add_text(top_text, font_size, text_color, text_position, image_path)
 
     return jsonify({'file_path': meme_path})
 

@@ -83,46 +83,37 @@
       </ul>
     </div>
 
+    
     <!-- Add Text Modal -->
-    <div class="modal fade" id="addTextModal" tabindex="-1" role="dialog" aria-labelledby="addTextModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header bg-primary text-white">
-            <h5 class="modal-title" id="addTextModalLabel">Add Text</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+<div class="modal fade" id="addTextModal" tabindex="-1" role="dialog" aria-labelledby="addTextModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="addTextModalLabel">Add Text</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <form id="addTextForm" action="/addtext" method="post" enctype="multipart/form-data" target="hidden_iframe">
+          <canvas id="imageCanvas"></canvas>
+          <div class="form-group">
+            <label for="top_text">Text</label>
+            <input type="text" class="form-control" name="top_text" id="top_text" />
           </div>
-          <div class="modal-body">
-            <form id="addTextForm" action="/addtext" method="post" enctype="multipart/form-data" target="hidden_iframe">
-              <div class="form-group">
-                <label for="top_text">Top Text</label>
-                <input type="text" class="form-control" name="top_text" id="top_text" />
-              </div>
-              <div class="form-group">
-                <label for="bottom_text">Bottom Text</label>
-                <input type="text" class="form-control" name="bottom_text" id="bottom_text" />
-              </div>
-              <div class="form-group">
-                <label for="font_size">Font Size: <span id="font_size_val">60</span>px</label>
-                <input type="range" class="form-control-range" name="font_size" id="font_size" min="12" max="120" step="1" value="60" oninput="updateValue('font_size', 'font_size_val')" />
-              </div>
-              <div class="form-group">
-                <label for="boldness">Boldness: <span id="boldness_val">0</span></label>
-                <input type="range" class="form-control-range" name="boldness" id="boldness" min="0" max="100" step="1" value="0" oninput="updateValue('boldness', 'boldness_val')" />
-              </div>
-              <div class="form-group">
-                <label for="opacity">Opacity: <span id="opacity_val">1</span></label>
-                <input type="range" class="form-control-range" name="opacity" id="opacity" min="0" max="1" step="0.1" value="1" oninput="updateValue('opacity', 'opacity_val')" />
-              </div>
-              <div class="form-group">
-                <label for="text_color">Text Color</label>
-                <input type="color" class="form-control" name="text_color" id="text_color" value="#ffffff" />
-              </div>
-              <button type="submit" class="btn btn-primary">Generate Meme</button>
-            </form>
+          <div class="form-group">
+            <label for="font_size">Font Size</label>
+            <input type="number" class="form-control" name="font_size" id="font_size" value="60" />
           </div>
-        </div>
+          <div class="form-group">
+            <label for="text_color">Text Color</label>
+            <input type="color" class="form-control" name="text_color" id="text_color" value="#ffffff" />
+          </div>
+          <input type="hidden" name="text_position" id="text_position" />
+          <button type="submit" class="btn btn-primary">Generate Meme</button>
+        </form>
       </div>
     </div>
+  </div><!-- Add Text Modal -->
+</div>
 
     <!-- Padding Modal -->
     <div class="modal fade" id="addPaddingModal" tabindex="-1" role="dialog" aria-labelledby="addPaddingModalLabel" aria-hidden="true">
@@ -277,19 +268,62 @@
         document.getElementById(outputId).innerText = document.getElementById(inputId).value
       }
       
-      $(document).ready(function () {
-        $('#addTextForm').on('submit', function (e) {
-          e.preventDefault() // Prevent the default form submission
-          // Close the modal
-          $('#addTextModal').modal('hide')
-          // Manually submit the form
-          this.submit()
-          // Delay the page reload by 1000 milliseconds (1 second)
-          setTimeout(function () {
-            location.reload()
-          }, 1000)
-        })
-      })
+      let canvas = document.getElementById('imageCanvas');
+  let ctx = canvas.getContext('2d');
+  let isDrawing = false;
+  let startX, startY, endX, endY;
+
+  // Load the image onto the canvas
+  let img = new Image();
+  img.src = 'static/latest.jpg';  // Path to the latest uploaded image
+  img.onload = function() {
+    canvas.width = img.width;
+    canvas.height = img.height;
+    ctx.drawImage(img, 0, 0);
+  };
+
+  canvas.addEventListener('mousedown', function(e) {
+    let rect = canvas.getBoundingClientRect();
+    startX = e.clientX - rect.left;
+    startY = e.clientY - rect.top;
+    if (startX >= 0 && startX <= canvas.width && startY >= 0 && startY <= canvas.height) {
+      isDrawing = true;
+    }
+  });
+
+  canvas.addEventListener('mousemove', function(e) {
+    if (isDrawing) {
+      ctx.drawImage(img, 0, 0); // Redraw the image to clear previous rectangle
+      let rect = canvas.getBoundingClientRect();
+      endX = e.clientX - rect.left;
+      endY = e.clientY - rect.top;
+      if (endX >= 0 && endX <= canvas.width && endY >= 0 && endY <= canvas.height) {
+        ctx.strokeRect(startX, startY, endX - startX, endY - startY);
+      }
+    }
+  });
+
+  canvas.addEventListener('mouseup', function(e) {
+    if (isDrawing) {
+      isDrawing = false;
+      let textPosition = {
+        x: startX,
+        y: startY,
+        width: endX - startX,
+        height: endY - startY
+      };
+      document.getElementById('text_position').value = JSON.stringify(textPosition);
+    }
+  });
+
+  document.getElementById('addTextForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    this.submit();
+    $('#addTextModal').modal('hide');
+    setTimeout(function() {
+      location.reload();
+    }, 1000);
+  });
       
       $(document).ready(function () {
         $('#addPaddingForm').on('submit', function (e) {
