@@ -85,35 +85,39 @@
 
     
     <!-- Add Text Modal -->
-<div class="modal fade" id="addTextModal" tabindex="-1" role="dialog" aria-labelledby="addTextModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header bg-primary text-white">
-        <h5 class="modal-title" id="addTextModalLabel">Add Text</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-      </div>
-      <div class="modal-body">
-        <form id="addTextForm" action="/addtext" method="post" enctype="multipart/form-data" target="hidden_iframe">
-          <canvas id="imageCanvas"></canvas>
-          <div class="form-group">
-            <label for="top_text">Text</label>
-            <input type="text" class="form-control" name="top_text" id="top_text" />
+    <div class="modal fade" id="addTextModal" tabindex="-1" role="dialog" aria-labelledby="addTextModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="addTextModalLabel">Add Text</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
-          <div class="form-group">
-            <label for="font_size">Font Size</label>
-            <input type="number" class="form-control" name="font_size" id="font_size" value="60" />
+          <div class="modal-body">
+            <form id="addTextForm" action="/addtext" method="post" enctype="multipart/form-data" target="hidden_iframe">
+              <div style="display: flex; justify-content: center;">
+                <canvas id="imageCanvas" style="max-width: 100%;"></canvas>
+              </div>
+              <div class="form-group">
+                <label for="top_text">Text</label>
+                <input type="text" class="form-control" name="top_text" id="top_text" />
+              </div>
+              <div class="form-group">
+                <label for="font_size">Font Size</label>
+                <input type="number" class="form-control" name="font_size" id="font_size" value="60" />
+              </div>
+              <div class="form-group">
+                <label for="text_color">Text Color</label>
+                <input type="color" class="form-control" name="text_color" id="text_color" value="#ffffff" />
+              </div>
+              <input type="hidden" name="text_position" id="text_position" />
+              <button type="submit" class="btn btn-primary">Generate Meme</button>
+            </form>
           </div>
-          <div class="form-group">
-            <label for="text_color">Text Color</label>
-            <input type="color" class="form-control" name="text_color" id="text_color" value="#ffffff" />
-          </div>
-          <input type="hidden" name="text_position" id="text_position" />
-          <button type="submit" class="btn btn-primary">Generate Meme</button>
-        </form>
+        </div>
       </div>
     </div>
-  </div><!-- Add Text Modal -->
-</div>
+    
+    
 
     <!-- Padding Modal -->
     <div class="modal fade" id="addPaddingModal" tabindex="-1" role="dialog" aria-labelledby="addPaddingModalLabel" aria-hidden="true">
@@ -267,63 +271,99 @@
       function updateValue(inputId, outputId) {
         document.getElementById(outputId).innerText = document.getElementById(inputId).value
       }
+      document.addEventListener('DOMContentLoaded', function() {
+        let canvas = document.getElementById('imageCanvas');
+        let ctx = canvas.getContext('2d');
+        let isDrawing = false;
+        let startX, startY, endX, endY;
       
-      let canvas = document.getElementById('imageCanvas');
-  let ctx = canvas.getContext('2d');
-  let isDrawing = false;
-  let startX, startY, endX, endY;
-
-  // Load the image onto the canvas
-  let img = new Image();
-  img.src = 'static/latest.jpg';  // Path to the latest uploaded image
-  img.onload = function() {
-    canvas.width = img.width;
-    canvas.height = img.height;
-    ctx.drawImage(img, 0, 0);
-  };
-
-  canvas.addEventListener('mousedown', function(e) {
-    let rect = canvas.getBoundingClientRect();
-    startX = e.clientX - rect.left;
-    startY = e.clientY - rect.top;
-    if (startX >= 0 && startX <= canvas.width && startY >= 0 && startY <= canvas.height) {
-      isDrawing = true;
-    }
-  });
-
-  canvas.addEventListener('mousemove', function(e) {
-    if (isDrawing) {
-      ctx.drawImage(img, 0, 0); // Redraw the image to clear previous rectangle
-      let rect = canvas.getBoundingClientRect();
-      endX = e.clientX - rect.left;
-      endY = e.clientY - rect.top;
-      if (endX >= 0 && endX <= canvas.width && endY >= 0 && endY <= canvas.height) {
-        ctx.strokeRect(startX, startY, endX - startX, endY - startY);
-      }
-    }
-  });
-
-  canvas.addEventListener('mouseup', function(e) {
-    if (isDrawing) {
-      isDrawing = false;
-      let textPosition = {
-        x: startX,
-        y: startY,
-        width: endX - startX,
-        height: endY - startY
-      };
-      document.getElementById('text_position').value = JSON.stringify(textPosition);
-    }
-  });
-
-  document.getElementById('addTextForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    this.submit();
-    $('#addTextModal').modal('hide');
-    setTimeout(function() {
-      location.reload();
-    }, 1000);
-  });
+        // Function to resize the canvas
+        function resizeCanvas() {
+          let modalBody = document.querySelector('.modal-body');
+          let maxWidth = modalBody.clientWidth;
+          let maxHeight = window.innerHeight * 0.8; // 80% of the viewport height
+      
+          let img = new Image();
+          img.src = 'static/latest.jpg';  // Path to the latest uploaded image
+          img.onload = function() {
+            let width = img.width;
+            let height = img.height;
+            
+            if (width > maxWidth) {
+              height = height * (maxWidth / width);
+              width = maxWidth;
+            }
+            if (height > maxHeight) {
+              width = width * (maxHeight / height);
+              height = maxHeight;
+            }
+      
+            canvas.width = width;
+            canvas.height = height;
+            ctx.drawImage(img, 0, 0, width, height);
+          };
+        }
+      
+        let img = new Image();
+        img.src = 'static/latest.jpg';  // Path to the latest uploaded image
+        img.onload = function() {
+          resizeCanvas();
+        };
+      
+        canvas.addEventListener('mousedown', function(e) {
+          let rect = canvas.getBoundingClientRect();
+          startX = e.clientX - rect.left;
+          startY = e.clientY - rect.top;
+          if (startX >= 0 && startX <= canvas.width && startY >= 0 && startY <= canvas.height) {
+            isDrawing = true;
+          }
+        });
+      
+        canvas.addEventListener('mousemove', function(e) {
+          if (isDrawing) {
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height); // Redraw the image to clear previous rectangle
+            let rect = canvas.getBoundingClientRect();
+            endX = e.clientX - rect.left;
+            endY = e.clientY - rect.top;
+            if (endX >= 0 && endX <= canvas.width && endY >= 0 && endY <= canvas.height) {
+              ctx.strokeRect(startX, startY, endX - startX, endY - startY);
+            }
+          }
+        });
+      
+        canvas.addEventListener('mouseup', function(e) {
+          if (isDrawing) {
+            isDrawing = false;
+            let textPosition = {
+              x: startX,
+              y: startY,
+              width: endX - startX,
+              height: endY - startY
+            };
+            document.getElementById('text_position').value = JSON.stringify(textPosition);
+          }
+        });
+      
+        document.getElementById('addTextForm').addEventListener('submit', function(e) {
+          e.preventDefault();
+          this.submit();
+          $('#addTextModal').modal('hide');
+          setTimeout(function() {
+            location.reload();
+          }, 1000);
+        });
+      
+        // Call resizeCanvas when the modal is shown
+        $('#addTextModal').on('shown.bs.modal', function() {
+          resizeCanvas();
+        });
+      
+        // Adjust the canvas size on window resize
+        window.addEventListener('resize', function() {
+          resizeCanvas();
+        });
+      });
+      
       
       $(document).ready(function () {
         $('#addPaddingForm').on('submit', function (e) {

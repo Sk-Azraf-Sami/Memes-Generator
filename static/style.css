@@ -385,3 +385,21 @@
     max-width: 100%;
     height: auto;
 }
+
+#imageCanvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ddd;
+}
+
+.modal-dialog {
+  max-width: 90%;
+}
+
+.modal-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
