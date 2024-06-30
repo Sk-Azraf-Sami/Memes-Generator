@@ -394,7 +394,7 @@
 }
 
 .modal-dialog {
-  max-width: 90%;
+  max-width: 50%;
 }
 
 .modal-body {
@@ -402,4 +402,3 @@
   justify-content: center;
   align-items: center;
 }
-
