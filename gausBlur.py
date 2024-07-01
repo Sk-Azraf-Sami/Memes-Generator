@@ -1,36 +1,56 @@
-import cv2
 import numpy as np
-import math
 from PIL import Image
+
+def create_gaussian_kernel(kernel_size, sigma):
+    """Create a Gaussian kernel."""
+    ax = np.linspace(-(kernel_size - 1) / 2., (kernel_size - 1) / 2., kernel_size)
+    xx, yy = np.meshgrid(ax, ax)
+    kernel = np.exp(-0.5 * (np.square(xx) + np.square(yy)) / np.square(sigma))
+    return kernel / np.sum(kernel)
+
+def apply_kernel(img, kernel):
+    """Apply a convolution kernel to an image with padding to avoid black borders."""
+    radius = kernel.shape[0] // 2
+    height, width = img.shape[:2]
+    # For simplicity, convert to float and normalize
+    img = img.astype(np.float32) / 255
+    
+    # Pad the image to handle borders
+    padded_img = np.pad(img, ((radius, radius), (radius, radius), (0, 0)), mode='reflect')
+    
+    # Output image
+    blurred = np.zeros_like(padded_img)
+    
+    # Apply kernel to each pixel in the padded image
+    for y in range(radius, height + radius):
+        for x in range(radius, width + radius):
+            for c in range(padded_img.shape[2]):
+                blurred[y, x, c] = np.sum(padded_img[y-radius:y+radius+1, x-radius:x+radius+1, c] * kernel)
+    
+    # Remove padding from the blurred image
+    blurred = blurred[radius:-radius, radius:-radius]
+    
+    # Convert back to 8-bit values
+    blurred = np.clip(blurred * 255, 0, 255).astype(np.uint8)
+    return blurred
 
 def gaussian_blur(kernel_size, sigma, image_path):
     # Open the image with PIL and convert to a NumPy array
     img = np.array(Image.open(image_path))
     
-    # Determine if the image is grayscale or color
-    is_grayscale = True if len(img.shape) == 2 else False
+    # Ensure kernel size is odd
+    if kernel_size % 2 == 0:
+        kernel_size += 1
     
-    # Generate Gaussian kernel
-    def gaussian(k_size, sigma):
-        offset = k_size // 2
-        kernel = np.zeros((k_size, k_size))
-        for x in range(-offset, offset + 1):
-            for y in range(-offset, offset + 1):
-                value = math.exp(-(x**2 + y**2) / (2 * sigma**2))
-                kernel[x + offset, y + offset] = value
-        kernel /= 2 * np.pi * sigma**2
-        kernel /= kernel.sum()
-        return kernel
+    # Create Gaussian kernel
+    kernel = create_gaussian_kernel(kernel_size, sigma)
     
-    gaussian_kernel = gaussian(kernel_size, sigma)
-    
-    # Apply Gaussian blur using OpenCV if the image is not grayscale
-    # OpenCV handles both grayscale and color images correctly
-    if not is_grayscale:
-        img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)  # Convert RGB to BGR for OpenCV
-    blurred_img = cv2.filter2D(img, -1, gaussian_kernel)
-    if not is_grayscale:
-        blurred_img = cv2.cvtColor(blurred_img, cv2.COLOR_BGR2RGB)  # Convert back to RGB
+    # Apply Gaussian blur
+    if len(img.shape) == 2:  # Grayscale image
+        blurred_img = apply_kernel(img.reshape(img.shape[0], img.shape[1], 1), kernel)
+        blurred_img = blurred_img.reshape(img.shape[0], img.shape[1])
+    else:  # Color image
+        blurred_img = apply_kernel(img, kernel)
     
     # Save the blurred image
     meme_path = 'static/latest.jpg'
