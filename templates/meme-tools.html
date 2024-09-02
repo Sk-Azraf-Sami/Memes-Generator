@@ -277,99 +277,63 @@
       function updateValue(inputId, outputId) {
         document.getElementById(outputId).innerText = document.getElementById(inputId).value
       }
-      document.addEventListener('DOMContentLoaded', function() {
-        let canvas = document.getElementById('imageCanvas');
-        let ctx = canvas.getContext('2d');
-        let isDrawing = false;
-        let startX, startY, endX, endY;
-      
-        // Function to resize the canvas
-        function resizeCanvas() {
-          let modalBody = document.querySelector('.modal-body');
-          let maxWidth = modalBody.clientWidth;
-          let maxHeight = window.innerHeight * 0.8; // 80% of the viewport height
-      
-          let img = new Image();
-          img.src = 'static/latest.jpg';  // Path to the latest uploaded image
-          img.onload = function() {
-            let width = img.width;
-            let height = img.height;
-            
-            if (width > maxWidth) {
-              height = height * (maxWidth / width);
-              width = maxWidth;
-            }
-            if (height > maxHeight) {
-              width = width * (maxHeight / height);
-              height = maxHeight;
-            }
-      
-            canvas.width = width;
-            canvas.height = height;
-            ctx.drawImage(img, 0, 0, width, height);
-          };
-        }
-      
-        let img = new Image();
-        img.src = 'static/latest.jpg';  // Path to the latest uploaded image
-        img.onload = function() {
-          resizeCanvas();
-        };
-      
-        canvas.addEventListener('mousedown', function(e) {
-          let rect = canvas.getBoundingClientRect();
-          startX = e.clientX - rect.left;
-          startY = e.clientY - rect.top;
-          if (startX >= 0 && startX <= canvas.width && startY >= 0 && startY <= canvas.height) {
-            isDrawing = true;
-          }
-        });
-      
-        canvas.addEventListener('mousemove', function(e) {
-          if (isDrawing) {
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height); // Redraw the image to clear previous rectangle
-            let rect = canvas.getBoundingClientRect();
-            endX = e.clientX - rect.left;
-            endY = e.clientY - rect.top;
-            if (endX >= 0 && endX <= canvas.width && endY >= 0 && endY <= canvas.height) {
-              ctx.strokeRect(startX, startY, endX - startX, endY - startY);
-            }
-          }
-        });
-      
-        canvas.addEventListener('mouseup', function(e) {
-          if (isDrawing) {
-            isDrawing = false;
-            let textPosition = {
-              x: startX,
-              y: startY,
-              width: endX - startX,
-              height: endY - startY
-            };
-            document.getElementById('text_position').value = JSON.stringify(textPosition);
-          }
-        });
-      
-        document.getElementById('addTextForm').addEventListener('submit', function(e) {
-          e.preventDefault();
-          this.submit();
-          $('#addTextModal').modal('hide');
-          setTimeout(function() {
-            location.reload();
-          }, 1000);
-        });
-      
-        // Call resizeCanvas when the modal is shown
-        $('#addTextModal').on('shown.bs.modal', function() {
-          resizeCanvas();
-        });
-      
-        // Adjust the canvas size on window resize
-        window.addEventListener('resize', function() {
-          resizeCanvas();
-        });
-      });
-      
+
+      let canvas = document.getElementById('imageCanvas');
+  let ctx = canvas.getContext('2d');
+  let isDrawing = false;
+  let startX, startY, endX, endY;
+
+  // Load the image onto the canvas
+  let img = new Image();
+  img.src = 'static/latest.jpg';  // Path to the latest uploaded image
+  img.onload = function() {
+    canvas.width = img.width;
+    canvas.height = img.height;
+    ctx.drawImage(img, 0, 0);
+  };
+
+  canvas.addEventListener('mousedown', function(e) {
+    let rect = canvas.getBoundingClientRect();
+    startX = e.clientX - rect.left;
+    startY = e.clientY - rect.top;
+    if (startX >= 0 && startX <= canvas.width && startY >= 0 && startY <= canvas.height) {
+      isDrawing = true;
+    }
+  });
+
+  canvas.addEventListener('mousemove', function(e) {
+    if (isDrawing) {
+      ctx.drawImage(img, 0, 0); // Redraw the image to clear previous rectangle
+      let rect = canvas.getBoundingClientRect();
+      endX = e.clientX - rect.left;
+      endY = e.clientY - rect.top;
+      if (endX >= 0 && endX <= canvas.width && endY >= 0 && endY <= canvas.height) {
+        ctx.strokeRect(startX, startY, endX - startX, endY - startY);
+      }
+    }
+  });
+
+  canvas.addEventListener('mouseup', function(e) {
+    if (isDrawing) {
+      isDrawing = false;
+      let textPosition = {
+        x: startX,
+        y: startY,
+        width: endX - startX,
+        height: endY - startY
+      };
+      document.getElementById('text_position').value = JSON.stringify(textPosition);
+    }
+  });
+
+  document.getElementById('addTextForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    this.submit();
+    $('#addTextModal').modal('hide');
+    setTimeout(function() {
+      location.reload();
+    }, 1000);
+  });
       
       $(document).ready(function () {
         $('#addPaddingForm').on('submit', function (e) {
