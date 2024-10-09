@@ -48,7 +48,7 @@ python app.py
 
 ## [Documentation](#documentation)
 
-For detailed information about the 'Memes Generator', please refer to the [docummentation](https://github.com/Sk-Azraf-Sami/SOS-Paper-Pencil-Game-AI/blob/main/sos-documentation.pdf).
+For detailed information about the 'Memes Generator', please refer to the [docummentation](https://github.com/Sk-Azraf-Sami/Memes-Generator/tree/main/document).
 
 
 ## [Contributing](#contributing)
