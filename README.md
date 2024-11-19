@@ -22,7 +22,7 @@
 
 ## [Description](#description)
 
-The **Meme Generator** is an innovative web application built using Python and Flask that allows users to create personalized memes with a wide range of features, including text addition, padding, collage creation, black-and-white conversion, image enhancement, Gaussian blurring, and background removal. It demonstrates key techniques in image processing and computer vision, making it both a practical tool and an educational platform.
+The **Memes Generator** is an innovative web application built using Python and Flask that allows users to create personalized memes with a wide range of features, including text addition, padding, collage creation, black-and-white conversion, image enhancement, Gaussian blurring, and background removal. It demonstrates key techniques in image processing and computer vision, making it both a practical tool and an educational platform.
 
 Key features include:
 - **Text Addition**: Customize memes with captions and credits.
