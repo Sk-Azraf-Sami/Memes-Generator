@@ -1,4 +1,4 @@
-# Meme Generator 
+# Memes Generator 
 
 
 ![Version](https://img.shields.io/badge/Version-1.0-blue.svg?style=plastic&logo=appveyor&logoColor=white&color=blueviolet)
@@ -22,10 +22,33 @@
 
 ## [Description](#description)
 
+The **Meme Generator** is an innovative web application built using Python and Flask that allows users to create personalized memes with a wide range of features, including text addition, padding, collage creation, black-and-white conversion, image enhancement, Gaussian blurring, and background removal. It demonstrates key techniques in image processing and computer vision, making it both a practical tool and an educational platform.
+
+Key features include:
+- **Text Addition**: Customize memes with captions and credits.
+- **Padding**: Add borders to images for better formatting.
+- **Collage Creation**: Combine multiple images into a single composite image.
+- **Image Enhancement**: Use histogram equalization to improve contrast.
+- **Black-and-White Conversion**: Convert images to grayscale.
+- **Blurring**: Apply Gaussian blur to reduce noise and smooth images.
+- **Background Removal**: Remove backgrounds using advanced techniques like GrabCut.
 
 
 ## [User Interface](#user-interface)
 
+This is the live version of the website:  
+[https://memes-generator-g87x.onrender.com/](https://memes-generator-g87x.onrender.com/)
+
+The user interface includes:  
+1. **Home Page**: A welcoming interface where users can upload images.  
+2. **Tools Page**: After uploading an image, users can access various tools to modify the image.  
+3. **Tool-Specific UI**: Each tool (e.g., Text Addition, Padding, Background Removal) has a dedicated, easy-to-use modal or interface to adjust settings interactively.  
+
+For example:
+- The **Text Addition Tool** allows users to dynamically adjust the position, size, and color of the text on the image.  
+- The **Collage Tool** includes options to specify rows and upload multiple images.  
+
+Check out the live demo to explore the full set of features!
 
 
 ## [Installation](#installation)
@@ -51,8 +74,6 @@ To install the MemeLab , follow these steps:
     ```bash
     python3 --version
     ```
-
-
 
 ## [How to Run](#how-to-run)
 
