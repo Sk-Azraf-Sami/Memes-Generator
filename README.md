@@ -29,9 +29,28 @@
 
 
 ## [Installation](#installation)
+To install the MemeLab , follow these steps:
 
-To install the SOS AI Game, follow these steps:
+1. **Clone the repository:**
+    ```bash
+    git clone https://github.com/Sk-Azraf-Sami/Memes-Generator.git
+    ```
 
+2. **Install the required dependencies:**
+    Make sure you have `pip` installed and then run:
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+3. **Ensure you have Python installed:**
+    The game was developed using Python 3.x. You can download the latest version from [python.org](https://www.python.org/downloads/). After installation, verify that Python is installed correctly by running:
+    ```bash
+    python --version
+    ```
+    or, for some systems:
+    ```bash
+    python3 --version
+    ```
 
 
 
